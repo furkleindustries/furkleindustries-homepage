@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	 	<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="twine2_macros.css"></style>
+		<script src="/analytics/analytics.js"></script>
+		<script src="jquery-2.1.3.min.js"></script>
+		<script src="twine2_macros.js"></script>
+	</head>
+	<body>
+		<ul id="macroList">
+			<a href="../">Back to Twine 2 Resources</a>
+			<br>
+			<br>
+			<br>
+			<li>
+				<div id="tableOfContents">
+					<p style="text-align: center;"><b>Table of Contents</b></p>
+					<ol id="tableOfContentsList"></ol>
+				</div>
+			</li>
+			<li>
+				<span class="listItemTitle"><span>Cycling Links</span><span class="collapser">▼</span></span>
+				<p>
+					<b>Insert into passage:</b>
+				</p>
+				<pre class="codeDisplay">(set: $myVar to "One")&lt;mark&gt;&lt;tw-link class='cyclingLink' data-cycling-texts='["One", "Two", "Three"]' onclick='clickCyclingLink(this, "$myVar");'&gt;$myVar&lt;/tw-link&gt;&lt;/mark&gt;</pre>
+				<p>
+					<b>Insert into Story JavaScript (full):</b>
+				</p>
+				<p>
+					<pre class="codeDisplay">var _engine = Engine;
+window._engine = _engine;
+var _state = State;
+window._state = _state;
+function clickCyclingLink(element, twineVar) {
+var texts = JSON.parse($(element).attr("data-cycling-texts"));
+if (typeof(texts) === typeof(undefined) || texts.length &lt; 2) {
+    return;
+}
+texts.push(texts.shift());
+var currentText = texts[0];
+if (currentText[0] === "$") {
+    currentText = getHarloweVariable(currentText);
+} else if (currentText === "out") {
+    $(element).remove();
+} else if (currentText === "end") {
+    var lastTextsIndex = texts[texts.length - 1];
+    if (lastTextsIndex[0] === "$") {
+        texts = [getHarloweVariable(lastTextsIndex)];
+    } else {
+        texts = [texts[texts.length - 1]];
+    }
+    if (!$(element).hasClass("endedCyclingLink")) {
+        $(element).addClass("endedCyclingLink");
+    }
+} else if (currentText.slice(0, 5) === "goto ") {
+    var gotoText = currentText.slice(5, currentText.length);
+    if (gotoText[0] === '$') {
+        gotoText = gotoText.slice(1, gotoText.length);
+    }
+    var id = parseInt(gotoText.trim());
+    if (!isNaN(id)) {
+        var passageData = $('tw-storydata &gt; tw-passagedata[pid=' + id + ']');
+        if (typeof(passageData) !== typeof(undefined) && 
+                passageData.length &gt; 1) {
+            _engine.goToPassage(id);
+        }
+    } else {
+        var passageData = $('tw-storydata &gt; tw-passagedata[name=' + gotoText + ']');
+        if (typeof(passageData) !== typeof(undefined) && 
+                passageData.length &gt;= 1) {
+            _engine.goToPassage($(passageData).attr('pid'));
+        }
+    }
+}
+setHarloweVariable(twineVar, texts[0]);
+$(element).text(currentText);
+$(element).attr("data-cycling-texts", JSON.stringify(texts));
+}
+window.clickCyclingLink = clickCyclingLink;
+function getHarloweVariable(prop) {
+if (typeof(prop) === typeof(undefined) ||
+        prop === '') {
+    return;
+}   
+return prop[0] === '$' ? 
+    _state.variables[prop.slice(1, prop.length)] : _state.variables[prop];
+}
+window.getHarloweVariable = getHarloweVariable;
+function setHarloweVariable(prop, val) {
+if (typeof(prop) === typeof(undefined) ||
+        prop === '' ||
+        typeof(val) === typeof(undefined)) {
+    return; 
+}
+if (prop[0] === '$') {
+    prop = prop.slice(1, prop.length);  
+}
+_state.variables[prop] = val;
+}
+window.setHarloweVariable = setHarloweVariable;</pre>
+				</p>
+				<p>
+					<b>Insert into Story JavaScript (minified):</b>
+				</p>
+				<pre class="codeDisplay">function clickCyclingLink(e,a){var t=JSON.parse($(e).attr("data-cycling-texts"));if(!("undefined"==typeof t||t.length&lt;2)){t.push(t.shift());var i=t[0];if("$"===i[0])i=getHarloweVariable(i);else if("out"===i)$(e).remove();else if("end"===i){var n=t[t.length-1];t="$"===n[0]?[getHarloweVariable(n)]:[t[t.length-1]],$(e).hasClass("endedCyclingLink")||$(e).addClass("endedCyclingLink")}else if("goto "===i.slice(0,5)){var l=i.slice(5,i.length);"$"===l[0]&&(l=l.slice(1,l.length));var s=parseInt(l.trim());if(isNaN(s)){var r=$("tw-storydata &gt; tw-passagedata[name="+l+"]");"undefined"!=typeof r&&r.length&gt;=1&&_engine.goToPassage($(r).attr("pid"))}else{var r=$("tw-storydata &gt; tw-passagedata[pid="+s+"]");"undefined"!=typeof r&&r.length&gt;1&&_engine.goToPassage(s)}}setHarloweVariable(a,t[0]),$(e).text(i),$(e).attr("data-cycling-texts",JSON.stringify(t))}}function getHarloweVariable(e){return"undefined"!=typeof e&&""!==e?"$"===e[0]?_state.variables[e.slice(1,e.length)]:_state.variables[e]:void 0}function setHarloweVariable(e,a){"undefined"!=typeof e&&""!==e&&"undefined"!=typeof a&&("$"===e[0]&&(e=e.slice(1,e.length)),_state.variables[e]=a)}var _engine=Engine;window._engine=_engine;var _state=State;window._state=_state,window.clickCyclingLink=clickCyclingLink,window.getHarloweVariable=getHarloweVariable,window.setHarloweVariable=setHarloweVariable;</pre>
+				<p>
+					<b>Passage Usage:</b>
+				</p>
+				<p>
+					This passage text code snippet creates a cycling link. Copy it into your passage
+					in each location you want a cycling link. It inserts into the passage
+					a single &lt;tw-link&gt; element with no <b>pid</b> attribute, which makes it 
+					incapable of moving the story to a different passage. The class of the &lt;tw-link&gt;
+					element is set as "cyclingLink".
+				</p>
+				<p>
+					The TwineScript macro <b>(set: $myVar to "One")</b> is necessary because without it
+					$myVar will not be set programmatically by the cycling link if the user leaves the page
+					without having cycled the link at least once.
+				</p>
+				<p>
+					The &lt;tw-link&gt;'s attribute "data-cycling-text" is used to contain the current state of the array
+					of possible values. Change the value contained within this to an array of your desired
+					text values. For example, if you wanted a link to cycle between the values "Cute Assault Rifle",
+					"Pink Shotgun", "Tiny Howitzer", and "Fluffy Grenade Launcher", replace the value within the 
+					quotation marks in data-cycling-text='' with ["Cute Assault Rifle", "Pink Shotgun", 
+					"Tiny Howitzer", "Fluffy Grenade Launcher"].
+				</p>
+				<p>
+					The onclick handler of the link is set to <b>clickCyclingLink</b>. The first argument provided
+					to clickCyclingLink must always be <b>this</b>. The second is a string containing the value
+					of the TwineScript variable to be updated each time the link is clicked. For example, if you wanted 
+					the variable set by the cycling link to be $coolTwineVariable, replace the values within the parentheses
+					for setHarloweVariable with "$coolTwineVariable", texts[0]. The quotation marks around the name of the
+					variable are mandatory. (The $ can preface the variable
+					name, or not. Your choice; the function is identical either way.) If you want the cycling effect
+					to be purely aesthetic, and not change any TwineScript variables, omit the second argument.
+				</p>
+				<p>
+					There are three special ending values for the <b>data-cycling-text</b> attribute. If the last value in
+					the array is "end", the link will disappear when "end" is reached. If the last value in the array is
+					"out", the value preceding "out" will be the last selectable value, and clicking the link again will
+					no longer cycle the text.
+				</p>
+				<p>
+					<b>Story JavaScript Usage:</b>
+				</p>
+				<p>
+					Within the story editing view, click the button with your story name and the &#9650; character.
+					Click the menu item <b>Edit Story JavaScript</b>. Paste the above code into the window and close
+					the window.
+				</p>
+				<p>
+					Note that you can use either the full or minified code; both are functionally identical. The minified
+					code will take up significantly less space in your Story Javascript, though, so if you have no intention
+					of reusing any of the helper methods used by <b>clickCyclingLink()</b>, the minified code will be less
+					obtrusive when adding more JavaScript, and (very) marginally reduce the size of your Twine to boot.
+				</p>
+			</li>
+			<li>
+				<span class="listItemTitle"><a name="gettwinescriptvariable"></a><span>Get TwineScript Variable</span><span class="collapser">▼</span></span>
+				<p>
+					<b>Insert into Story JavaScript (full):</b>
+				</p>
+				<pre class="codeDisplay">var _state = State;
+window._state = _state;
+function getHarloweVariable(prop) {
+	if (typeof(prop) === typeof(undefined) ||
+			prop === '') {
+		return;
+	}	
+	return prop[0] === '$' ? 
+		_state.variables[prop.slice(1, prop.length)] : _state.variables[prop];
+}
+window.getHarloweVariable = getHarloweVariable;</pre>
+				<p>
+					<b>Insert into Story JavaScript (minified):</b>
+				</p>
+				<pre class="codeDisplay">function getHarloweVariable(e){return"undefined"!=typeof e&&""!==e?"$"===e[0]?_state.variables[e.slice(1,e.length)]:_state.variables[e]:void 0}var _state=State;window._state=_state,window.getHarloweVariable=getHarloweVariable;</pre>
+				<p>
+					<b>Story JavaScript Usage:</b>
+				</p>
+				<p>
+					Within the story editing view, click the button with your story name and the &#9650; character.
+					Click the menu item <b>Edit Story JavaScript</b>. Paste the above code into the window and close
+					the window.
+				</p>
+				<p>
+					Note that you can use either the full or minified code; both are functionally identical.
+				</p>
+				<p>
+					Use whenever you want to get a TwineScript variable within JavaScript.
+				</p>
+			</li>
+			<li>
+				<span class="listItemTitle"><a name="settwinescriptvariable"></a><span>Set TwineScript Variable</span><span class="collapser">▼</span></span>
+				<p>
+					<b>Insert into Story JavaScript (full):</b>
+				</p>
+				<pre class="codeDisplay">var _state = State;
+window._state = _state;
+function setHarloweVariable(prop, val) {
+    if (typeof(prop) === typeof(undefined) ||
+            prop === '' ||
+            typeof(val) === typeof(undefined)) {
+        return; 
+    }
+    if (prop[0] === '$') {
+        prop = prop.slice(1, prop.length);  
+    }
+    _state.variables[prop] = val;
+}
+window.setHarloweVariable = setHarloweVariable;</pre>
+				<p>
+					<b>Insert into Story JavaScript (minified):</b>
+				</p>
+				<pre class="codeDisplay">function setHarloweVariable(e,a){"undefined"!=typeof e&&""!==e&&"undefined"!=typeof a&&("$"===e[0]&&(e=e.slice(1,e.length)),_state.variables[e]=a)}var _state=State;window._state=_state,window.setHarloweVariable=setHarloweVariable;</pre>
+				<p>
+					<b>Story JavaScript Usage:</b>
+				</p>
+				<p>
+					Within the story editing view, click the button with your story name and the &#9650; character.
+					Click the menu item <b>Edit Story JavaScript</b>. Paste the above code into the window and close
+					the window.
+				</p>
+				<p>
+					Note that you can use either the full or minified code; both are functionally identical.
+				</p>
+				<p>
+					Use whenever you want to set a TwineScript variable within JavaScript. Note that the undo and redo
+					arrows in Harlowe use <b>State</b> to track variables, so any changes made with setHarloweVariable
+					will be properly set/unset in the same way variables set through TwineScript would be.
+				</p>
+			</li>
+		</ul>
+	</body>
+</html>

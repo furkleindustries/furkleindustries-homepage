@@ -1,0 +1,118 @@
+html, body {
+	width: 98%;
+	height: 99%;
+	padding-left: 1%;
+}
+.textElement {
+	width: 67%;
+	font-family: "Helvetica Neue";
+}
+#sliderArrowDiv {
+	position: absolute;
+	margin-top: 20px;
+	width: 47.5%;
+	left: 7.5%;
+	z-index: 1;
+}
+.sliderNavigationElement {
+	position: absolute;
+ 	font-size: 1.75em;
+	top: 20px;
+}
+#sliderTitle {
+	color: #aa0000;
+	transition: opacity 1s ease-in-out;
+	-webkit-transition: opacity 1s ease-in-out;
+}
+.sliderArrow {
+ 	color: #a0a0a0;
+ 	text-shadow: rgb(255, 215, 0) 0px 0px 2px;
+ 	cursor: pointer;
+ 	transition: color 0.33s ease-in-out;
+ 	-webkit-transition: color 0.33s ease-in-out;
+}
+.sliderArrow:hover {
+	color: rgb(255, 215, 0);
+ 	text-shadow: #606060 0px 0px 2.5px;
+}
+#leftSliderArrow {
+	left: 10%;
+}
+#rightSliderArrow {
+	right: 10%; 
+}
+#tutorialSlider {
+	position: relative;
+	overflow: hidden;
+	width: 50%;
+	left: 5%;
+	height: 850px;
+	border: 5px outset;
+	padding: 20px;
+	margin-top: 30px;
+	box-sizing: border-box;
+	background-color: #fafafa;
+}
+#sliderDotNavigator {
+	position: absolute;
+	bottom: 0px;
+	height: 75px;
+}
+.navigatorDot {
+	color: #808080;
+	text-shadow: black 0px 0px 2px;
+	cursor: pointer;
+	padding: 4px;
+}
+.navigatorDot:hover:not(.activeNavigatorDot) {
+	color: #f0f0f0;
+	text-shadow: black 0px 0px 4px;
+ 	transition: color 0.33s ease-in-out;
+ 	-webkit-transition: color 0.33s ease-in-out;
+}
+.activeNavigatorDot {
+	color: rgb(255, 215, 0);
+	cursor: default;
+ 	transition: color 1s ease-in-out;
+ 	-webkit-transition: color 1s ease-in-out;
+}
+.sliderFrame {
+	position: absolute;
+	margin-top: 45px;
+	margin-right: 20px;
+	padding-left: 10px;
+	padding-right: 15px;
+	height: 700px;
+	font-family: "Helvetica Neue";
+	display: none;
+	overflow-y: scroll;
+	background-color: white;
+	border-radius: 10px;
+}
+.activeSlider {
+	display: inline-block;
+	transition: transform 1.5s ease-in-out;
+	-webkit-transition: transform 1.5s ease-in-out;
+}
+#interactiveTutorialArrow {
+	position: relative;
+	font-size: 2em;	
+	text-align: right;
+	cursor: pointer;
+	padding-right: 7.5%;
+}
+#interactiveTutorialIFrame {
+	position: relative;
+	left: 6.5%;
+	width: 85%;
+	height: 95%;
+	margin-bottom: 50px;
+}
+.centerHorizontally {
+	left: 50%;
+	transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+}

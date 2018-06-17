@@ -1,0 +1,140 @@
+tw-storydata {
+	display: none;
+}
+
+.citation {
+	position: relative;
+	color: blue;
+	cursor: pointer;
+}
+
+.citationPopupContainer {
+	position: absolute;
+	max-width: 250px;
+}
+
+.citationPopup {
+	position: relative;
+	padding: 15px;
+	border: 2px solid black;
+	border-radius: 5px;
+	background: white;
+	color: black;
+	text-align: center;
+	cursor: initial;
+	z-index: 1;
+}
+
+.citationPopup.circle {
+	padding: 15%;
+	border-radius: 50%;
+}
+
+.citationPopup.rectangle {
+	border-radius: 0;
+}
+
+.citationPopup.oval {
+	padding: 15%;
+	border-radius: 33%;
+}
+
+.citationPopupClose {
+	position: absolute;
+	right: 0;
+	top: 0;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+}
+
+.citationPopup.oval .citationPopupClose {
+	top: 10px;
+}
+
+.citationPopup.oval .citationPopupClose,
+.citationPopup.circle .citationPopupClose {
+	right: 2px;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.citationPopupConnector {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	z-index: 1;
+}
+
+.citationPopupConnector:not(.flipped) {
+	bottom: -8px;
+	border-top: 10px solid black;
+}
+
+.citationPopupConnector.flipped {
+	top: -8px;
+	border-bottom: 10px solid black;
+}
+
+.citationPopupConnector.oval,
+.citationPopupConnector.circle
+{
+	width: 7px;
+	height: 50%;
+	border: 2px solid black;
+	background: white;
+	z-index: 0;
+}
+
+.citationPopupConnector:not(.flipped).oval,
+.citationPopupConnector:not(.flipped).circle {
+	bottom: -10%;
+	border-radius: 0 0 100% 100%;
+}
+
+.citationPopupConnector.flipped.oval,
+.citationPopupConnector.flipped.circle {
+	top: -7.5%;
+	border-radius: 100% 100% 0 0;
+}
+
+
+.citationPopupConnector::after {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	content: '';
+}
+
+.citationPopupConnector:not(.flipped)::after {
+	left: -8.5px;
+	top: -12px;
+	border-top: 10px solid white;
+}
+
+.citationPopupConnector.flipped::after {
+	left: -8.5px;
+	top: 2px;
+	border-bottom: 10px solid white;
+}
+
+.citationPopupConnector:not(.flipped).oval::after,
+.citationPopupConnector:not(.flipped).circle::after {
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+}
+
+.citationPopupConnector.flipped.oval::after,
+.citationPopupConnector.flipped.circle::after {
+	border-bottom: 0;
+	border-left: 0;
+	border-right: 0;
+}

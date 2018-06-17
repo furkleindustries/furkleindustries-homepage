@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<style type="text/css">
+			html, body {
+				width: 99%;
+				height: 97.5%;
+				display: inline;
+				margin: 0px;
+				background-color: black;
+				overflow: auto;
+			}
+			#selectionButtonSidebar {
+				position: relative;
+				width: 25%;
+				height: 100%;
+				background-color: #0099ff;
+				padding: 1%;
+				margin: 1%;
+				box-sizing: border-box;
+				float: left;
+				overflow: scroll;
+			}
+			.selectionTitle {
+				text-align: center;
+				font-family: "Helvetica Neue";
+				font-size: 1.25em;
+				font-weight: 700;
+				color: white;
+			}
+			.selectionButtonTransformList {
+				list-style: none;
+				padding: 0px;
+			}
+			.selectionButtonTransformList li {
+				margin: 1%;
+			}
+			.selectionButton {
+				border: none;
+				color: #f0f0f0;
+				background-color: #000dff;
+				font-size: 1em;
+				width: 100%;
+				font-family: "Helvetica Neue";
+				cursor: pointer;
+				border-radius: 2px;
+				box-sizing: border-box;
+			}
+			.selectionButton:hover {
+				background-color: #ff8e00;
+				box-shadow: 0px 0px 15px white;
+			}
+			.selectionButton:active {
+				background-color: #ffbc00;
+			}
+			.selectionButton.selected {
+				background-color: #ffbc00;
+			}
+			#transformDisplay {
+				position: relative;
+				width: 73%;
+				height: 70%;
+				margin: 1% 1% 0.5% 0.5%;
+				background-color: white;
+				box-sizing: border-box;
+				overflow: hidden;
+			}
+			#perspectiveControl {
+				position: absolute;
+				display: none;
+				bottom: 5%;
+				overflow: scroll;
+				background-color: white;
+				padding: 20px;
+			}
+			#codeDisplay {
+				position: relative;
+				left: 26%;
+				width: 73%;
+				height: 28.8%;
+				margin: 1% 0% 0% 1%;
+				padding: 0.5%;
+				background-color: white;
+				box-sizing: border-box;
+			}
+			.codeLine {
+				font-family: "Helvetica Neue";
+				margin: 0px;
+				padding: 0px;
+			}
+			#manipulatorObject {
+				position: relative;
+				left: 32.5%;
+				top: 32.5%;
+				width: 35%;
+				height: 35%;
+				background: url("map.png") red;
+				background-size: cover;
+			}
+			.manipulatorObjectHotspot {
+				position: absolute;
+				width: 10%;
+				height: 10%;
+				background-color: rgba(0, 0, 0, 0.25);
+				cursor: pointer;
+			}
+			.manipulatorObjectHotspotOneOfOne, .manipulatorObjectHotspotTwoOfTwo, .manipulatorObjectHotspotTwoOfThree, .manipulatorObjectHotspotTwoOfFour {
+				right: 0px;
+			}
+			.manipulatorObjectHotspotOneOfTwo, .manipulatorObjectHotspotOneOfThree, .manipulatorObjectHotspotOneOfFour {
+				left: 0px;
+			}
+			.manipulatorObjectHotspotThreeOfThree, .manipulatorObjectHotspotThreeOfFour {
+				top: 0px;
+			}
+			.manipulatorObjectHotspotFourOfFour {
+				bottom: 0px;
+			}
+			.manipulatorObjectHotspotOneOfSix {
+				left: 0px;
+				top: 4%;
+			}
+			.manipulatorObjectHotspotTwoOfSix {
+				left: 0px;
+			}
+			.manipulatorObjectHotspotThreeOfSix {
+				left: 0px;
+				bottom: 4%;
+			}
+			.manipulatorObjectHotspotFourOfSix {
+				right: 0px;
+				top: 4%;
+			}
+			.manipulatorObjectHotspotFiveOfSix {
+				right: 0px;
+			}
+			.manipulatorObjectHotspotSixOfSix {
+				right: 0px;
+				bottom: 4%;
+			}
+			.manipulatorObjectHotspotOneOfSixteen {
+				left: 0px;
+				top: 14%;
+			}
+			.manipulatorObjectHotspotTwoOfSixteen {
+				right: 0px;
+				top: 14%;
+			}
+			.manipulatorObjectHotspotThreeOfSixteen {
+				left: 0px;
+				top: 34.3%;
+			}
+			.manipulatorObjectHotspotFourOfSixteen {
+				right: 0px;
+				top: 34.3%;
+			}
+			.manipulatorObjectHotspotFiveOfSixteen {
+				left: 0px;
+				top: 54.6%;
+			}
+			.manipulatorObjectHotspotSixOfSixteen {
+				right: 0px;
+				top: 54.6%;
+			}
+			.manipulatorObjectHotspotSevenOfSixteen {
+				left: 0px;
+				top: 75%;
+			}
+			.manipulatorObjectHotspotEightOfSixteen {
+				right: 0px;
+				top: 75%;
+			}
+			.manipulatorObjectHotspotNineOfSixteen {
+				top: 0px;
+				left: 14%;
+			}
+			.manipulatorObjectHotspotTenOfSixteen {
+				bottom: 0px;
+				left: 14%;
+			}
+			.manipulatorObjectHotspotElevenOfSixteen {
+				top: 0px;
+				left: 34.3%;
+			}
+			.manipulatorObjectHotspotTwelveOfSixteen {
+				bottom: 0px;
+				left: 34.3%;
+			}
+			.manipulatorObjectHotspotThirteenOfSixteen {
+				top: 0px;
+				left: 54.6%;
+			}
+			.manipulatorObjectHotspotFourteenOfSixteen {
+				bottom: 0px;
+				left: 54.6%;
+			}
+			.manipulatorObjectHotspotFifteenOfSixteen {
+				top: 0px;
+				left: 75%;
+			}
+			.manipulatorObjectHotspotSixteenOfSixteen {
+				bottom: 0px;
+				left: 75%;
+			}
+			.centerHorizontally {
+				left: 50%;
+				transform: translateX(-50%);
+			}
+			.centerVertically {
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			.centerHorizontallyAndVertically {
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		</style>
+		<script type="text/javascript" src="jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="transform.js"></script>
+	</head>
+	<body>
+		<div id="selectionButtonSidebar">
+			<ul id="2dTransformsList" class="selectionButtonTransformList">
+				<li class="selectionTitle">2D Transforms</li>
+				<li><button id="skewX2d" class="selectionButton">skewX</button></li>
+				<li><button id="skewY2d" class="selectionButton">skewY</button></li>
+				<li><button id="skew2d" class="selectionButton">skew</button></li>
+				<li><button id="translateX2d" class="selectionButton">translateX</button></li>
+				<li><button id="translateY2d" class="selectionButton">translateY</button></li>
+				<li><button id="translate2d" class="selectionButton">translate</button></li>
+				<li><button id="scaleX2d" class="selectionButton">scaleX</button></li>
+				<li><button id="scaleY2d" class="selectionButton">scaleY</button></li>
+				<li><button id="scale2d" class="selectionButton">scale</button></li>
+				<li><button id="rotate2d" class="selectionButton">rotate</button></li>
+				<li><button id="matrix2d" class="selectionButton">matrix</button></li>
+			</ul>
+			<ul id="3dTransformsList" class="selectionButtonTransformList">
+				<li class="selectionTitle">3D Transforms</li>
+				<li><button id="translateX3d" class="selectionButton">translateX</button></li>
+				<li><button id="translateY3d" class="selectionButton">translateY</button></li>
+				<li><button id="translateZ3d" class="selectionButton">translateZ</button></li>
+				<li><button id="translate3d" class="selectionButton">translate3d</button></li>
+				<li><button id="scaleX3d" class="selectionButton">scaleX</button></li>
+				<li><button id="scaleY3d" class="selectionButton">scaleY</button></li>
+				<li><button id="scaleZ3d" class="selectionButton">scaleZ</button></li>
+				<li><button id="scale3d" class="selectionButton">scale3d</button></li>
+				<li><button id="rotateX3d" class="selectionButton">rotateX</button></li>
+				<li><button id="rotateY3d" class="selectionButton">rotateY</button></li>
+				<li><button id="rotateZ3d" class="selectionButton">rotateZ</button></li>
+				<li><button id="rotate3d" class="selectionButton">rotate3d</button></li>
+				<li><button id="matrix3d" class="selectionButton">matrix3d</button></li>
+			</ul>
+		</div>
+		<div id="transformDisplay">
+			<div id="manipulatorObject"></div>
+			<div id="perspectiveControl" class="centerHorizontally">
+				<p style="margin: 10px; padding: 0px; font-family: 'Helvetica Neue'">Perspective Control</p>
+				<input type="range" id="perspectiveSlider" value="500" min="0" max="2000"></input>
+				<span id="perspectiveValue" style="margin-left: 5px;">500</span>
+			</div>
+		</div>
+		<div id="codeDisplay">
+		</div>
+	</body>
+</html>

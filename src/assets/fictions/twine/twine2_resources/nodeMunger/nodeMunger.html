@@ -1,0 +1,228 @@
+<html>
+    <head>
+        <title>Twine 2 nodeMunger</title>
+        <style>
+            #storyTitle {
+                position: absolute;
+                left: 1.5%;
+                max-width: 45%;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            #story {
+                position: absolute;
+                left: 1%;
+                top: 3%;
+                width: 48.5%;
+                height: 63%;
+            }
+            #newTitle {
+                position: absolute;
+                right: 1.5%;
+                max-width: 45%;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            #newContent {
+                position: absolute;
+                right: 1%;
+                top: 3%;
+                width: 48.5%;
+                height: 63%;
+            }
+            textarea {
+                font-size: 1rem;
+            }
+            #munge {    
+                position: absolute;
+                left: 1%;
+                top: 66.5%;
+                width: 98%;
+                height: 2%;
+            }
+            #complete {
+                position: absolute;
+                left: 1%;
+                bottom: 1%;
+                width: 98%;
+                height: 30%;
+                border: 0.10rem solid black;
+                box-sizing: border-box;
+                overflow-y: scroll;
+                word-break: break-word;
+            }
+            #help, #modalClose {
+                position: absolute;
+                right: 1.1%;
+                top: 3.25%;
+                width: 1.75rem;
+                height: 1.75rem;
+                font-size: 1rem;
+                color: white;
+                border-radius: 0.25rem;
+                background: rgba(100, 100, 100, 0.67);
+                cursor: pointer;
+            }
+            #helpModal {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 50%;
+                height: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(225, 225, 225, 1);
+                border-radius: 1rem;
+            }
+            #helpModal > span {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 80%;
+                height: 80%;
+                transform: translate(-50%, -50%);
+				overflow-y: scroll;
+            }
+            #modalClose {
+                top: 1%;
+                right: 1.25%;
+            }
+        </style>
+		<script src="/analytics/analytics.js"></script>
+    </head>
+    <body>
+        <b id="storyTitle">Pre-existing passageData HTML</b>
+        <textarea id="story"></textarea>
+        <b id="newTitle">New nodes (:: delimited, :: @nodename optional)</b>
+        <textarea id="newContent"></textarea>
+        <button id="munge">Combine nodes!</button>
+        <textbox id="complete"></textbox>
+        <button id="help">?</button>
+        <div id="helpModal" style="visibility: hidden"><span>Thanks so much for checking out this sweet, humble nodeMunger. In order to use me, please do the following (and don't forget to scroll if part of it is hidden!):<br><br>1. Publish your Twine story to HTML.<br>2. Open that HTML file in a text editor of your choice.<br>3. Either:<br>&nbsp;&nbsp;&nbsp;&nbsp;3a. Copy the whole of the &lt;tw-storydata&gt; element, from the &lt;tw-storydata&gt; open tag to the the &lt;/tw-storydata&gt; closing tag, or,<br>&nbsp;&nbsp;&nbsp;&nbsp;3b. Copy every &lt;tw-passagedata&gt; element within the &lt;tw-storydata&gt; element.<br>4. Paste this into the field marked "<b>Pre-existing passageData HTML</b>."<br>5. Copy all the nodes you've written outside of Twine, each of which must be separated by a :: (double colon), with a passage name optionally provided after the double colon, beginning with an @. Example: :: @myTestPassage, with the text on the same line or the line below.<br>6. Paste this into the field marked "<b>New nodes (:: delimited, :: @nodename optional)</b>."<br>7. Click the button marked "Combine nodes!."<br>8. Paste the results that have appeared below overtop the text you'd selected in the original published HTML.<br>9. Save the HTML file and import the saved copy into Twine.<br><br>If any part of that is less than clear, please feel free to bother me on twitter at <a href="http://twitter.com/furkle_">@furkle_</a>!</span><button id="modalClose">X</button></div>
+        
+        <script>
+            'use strict';
+            const story = document.querySelector('#story');
+            const newContent = document.querySelector('#newContent');
+            const button = document.querySelector('#munge');
+            const complete = document.querySelector('#complete');
+
+            button.onclick = function() {
+                const content = newContent.value;
+                const splitContent = content.split('::')
+                    .filter(function(a) { return a.trim() !== '' });
+                
+                const newPassages = [];
+
+                splitContent.forEach(function(passageText) {
+                    const trimmed = passageText.trim();
+                    let passageName;
+                    if (trimmed[0] === '@' && trimmed[1].match(/\S/)) {
+                        passageName = trimmed.slice(1).split(/\s/)[0];
+                        passageText = passageText.slice(passageText.search(/\n/) + 1);
+                    }
+
+                    newPassages.push({
+                        text: passageText,
+                        name: passageName,
+                        pid: null
+                    });
+                });
+                
+                const container = document.createElement('div');
+                container.innerHTML = story.value;
+
+                const firstChild = container.children[0];
+                if (firstChild &&
+                    firstChild.tagName &&
+                    firstChild.tagName.toLowerCase() === 'tw-storydata') 
+                {
+                    container.innerHTML = firstChild.innerHTML;
+                }
+
+                const PIDs = [];
+                let maxPID = 0;
+
+                const names = [];
+
+                for (let ii = 0; ii < container.children.length; ii++) {
+                    const child = container.children[ii];
+
+                    if (!child.tagName || child.tagName.toLowerCase() !== 'tw-passagedata') {
+                        continue;
+                    }
+
+                    let pid = child.getAttribute('pid');
+                    if (!pid) {
+                        alert('One of the tw-passagedata nodes pasted into the passageData HTML pane lacks a pid attribute.');
+                        continue;
+                    } else if (Number.isNaN(Number.parseInt(pid))) {
+                        alert('One of the tw-passagedata nodes pasted into the passageData HTML pane has a pid attribute whose value is not a string representation of an integer (1, 2, 3, etc.).');
+                        continue;
+                    }
+
+                    pid = Number.parseInt(pid);
+
+                    if (PIDs.indexOf(pid) !== -1) {
+                        alert('At least two of the nodes pasted into the passageData HTML pane have an identical pid attribute. This is not allowed.');
+                        continue;
+                    }
+
+                    PIDs.push(pid);
+                    maxPID = Math.max(maxPID, pid);
+
+                    const name = child.getAttribute('name');
+                    if (!name) {
+                        alert('One of the tw-passagedata nodes pasted into the passageData HTML pane lacks a name attribute.');
+                        continue;
+                    }
+
+                    if (names.indexOf(name) !== -1) {
+                        alert('At least two of the nodes pasted into the passageData HTML pane have an identical name attribute. This is not allowed.');
+                        continue;
+                    }
+
+                    names.push(name);
+                }
+
+                // go to the next unused value
+                maxPID++;
+
+                let index = 0;
+                newPassages.forEach(function(passage) {
+                    const pid = maxPID++;
+                    passage.pid = pid;
+                    if (!passage.name) {
+                        passage.name = 'nodeMungerTemp' + pid;
+                    }
+
+                    const newPassage = document.createElement('tw-passagedata');
+                    newPassage.setAttribute('pid', passage.pid);
+                    newPassage.setAttribute('name', passage.name);
+                    newPassage.setAttribute('position', '800, ' + 80 * index++);
+                    newPassage.setAttribute('tags', '');
+                    
+                    newPassage.innerHTML = passage.text;
+
+                    container.appendChild(newPassage);
+                });
+
+                complete.textContent = container.innerHTML;
+            };
+
+            const helpButton = document.querySelector('#help');
+            const helpModal = document.querySelector('#helpModal');
+            const modalClose = document.querySelector('#modalClose');
+
+            const toggleModal = function() {
+                if (helpModal.style.visibility === 'hidden') {
+                    helpModal.style.visibility = 'visible';
+                } else {
+                    helpModal.style.visibility = 'hidden';
+                }
+            };
+
+            helpButton.onclick = toggleModal;
+            modalClose.onclick = toggleModal;
+        </script>
+    </body>
+</html>

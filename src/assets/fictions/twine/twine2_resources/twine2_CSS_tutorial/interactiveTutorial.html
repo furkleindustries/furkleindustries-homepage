@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	 	<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="interactiveTutorial.css"></link>
+		<script src="jquery-2.1.3.min.js"></script>
+		<script src="interactiveTutorial.js"></script>
+	</head>
+	<body>
+		<iframe id="interactiveTutorialIFrame" src="tutorialTwine.html"></iframe>
+		<div id="sidebarContainerDiv" class="responsiveText">
+			<div id="sidebarPrebuiltDiv">
+				<p style="margin-top: 0px;">Click the <b>▶ icon</b> to expand the list of rules for any particular selector, and the <b>▼ icon</b> to collapse it.<br><br>Type one or more semicolon-separated property:value; pairs into the <b>input</b> at the bottom of the list, press the <b>Enter key</b> or the <b>Add button</b> to add the pairs, and click the attached <b>x button</b> to remove the pair. Click the <b>Clear button</b> next to the Add button to clear all pairs from a selector.<br><br><b>Hover</b> over a CSS selector to temporarily activate the associated property:value; pairs.<br><br><b>Check</b> a selector to keep them active.</p>
+			</div>
+			<div id="selectorAdderDiv">
+				<p>Use the entry below and the <b>Enter key</b> or the <b>Add button</b> below to add your own CSS selectors! (Note: these are performed through jQuery, so some valid selectors may not function as expected. In particular, selectors containing pseudo elements will not work.)</p>
+				<div>
+					<input id="selectorInput"><button id="selectorButton">Add</button>
+				</div>
+			</div>
+		</div>
+		<div id="elementEntryDiv" class="responsiveText">
+			<p>
+				Type <b>HTML</b>, <b>plain text</b>, or any syntax for creating <b>Twine 2 links</b>, and press the <b>Enter key</b> or the <b>Add button</b> to add a new entry to the tw-passage element. Any HTML will be interpreted as if it had been placed inside a Twine 2 <b>mark element</b>. Click the <b>clear button</b> to clear contents of the tw-passage 
+				element.
+			</p>
+			<input id="elementEntryInput">
+			<button id="elementEntryButton">Add</button>
+			<button id="elementClearButton">Clear</button>
+		</div>
+	</body>
+</html>

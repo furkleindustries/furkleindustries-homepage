@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" class="unloaded">
+    <head>
+        <title>televisionThemeTest</title>
+        <meta charset="utf-8">
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+            tw-passagedata, tw-theme-json, tw-additional-text {
+                display: none;
+            }
+            tw-passage {
+                position: absolute;
+                width: 60% !important;
+                height: 47.5% !important;
+                min-height: 47.5% !important;
+                max-height: 47.5% !important;
+                margin: 1rem;
+                padding: 1rem;
+                box-sizing: border-box !important;
+            }
+
+            #_techDemo {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                text-align: center;
+                width: 100%;
+                transform: rotate(-45deg) translateY(-50%);
+                pointer-events: none;
+                opacity: 0.15;
+                font-size: 12rem;
+            }
+
+            #_readout {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                width: 60%;
+                height: 47%;
+                margin: 1rem;
+                padding: 1rem;
+                box-sizing: border-box;
+            }
+
+            #_controls {
+                position: absolute;
+                right: 0;
+                width: 35%;
+                height: 95%;
+                margin: 1rem;
+                overflow-y: scroll;
+            }
+
+            #_refreshContainer {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                padding-top: 1rem;
+                background: white;
+                z-index: 1;
+            }
+
+            #_refresh {
+                margin-bottom: 0.5rem;
+                font-size: 1.25rem;
+            }
+
+            #_containers {
+                position: absolute;
+                top: 2.33rem;
+                width: 100%;
+                height: 93%;
+                height: calc(100% - 2rem);
+            }
+
+            ._container {
+                margin-bottom: 0.5rem;
+                border: 1px solid black;
+                padding: 0.5rem;
+                box-sizing: border-box;
+            }
+
+            ._container span, ._container input, #refresh {
+                font-size: 1.25rem;
+            }
+
+            ._container input:not([type]) {
+                position: absolute;
+                right: 0.5rem;
+                width: 20rem;
+                max-width: 40%;
+            }
+
+            ._container input[type] {
+                margin: 0.5rem;
+                box-sizing: border-box;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="gatelyBuilt.js"></script>
+    <body onclick="var td = document.querySelector('#_techDemo'); td.parentNode.removeChild(td); document.body.removeAttribute('onclick');">
+        <span id="_techDemo">TECH DEMO</span>
+
+        <tw-passagedata name="init" tags="_television-screen">
+            &lt;?
+                The BorderRadius is "1rem";
+                The BackgroundColor is "black";
+
+                The GlowColor is "white";
+                The GlowOpacity is "0.5";
+                The GlowWidth is "6rem";
+                The GlowRepeat is "5";
+
+                The NoiseAnimStatus is "On";
+                The NoiseAnimMinOpacity is "0.5";
+                The NoiseAnimMaxOpacity is "0.75";
+                The NoiseAnimMinLeft is "-1.55%";
+                The NoiseAnimMaxLeft is "0";
+                The NoiseAnimMinTop is "-1%";
+                The NoiseAnimMaxTop is "0";
+                The NoiseAnimMinWidth is "110%";
+                The NoiseAnimMaxWidth is "115%";
+                The NoiseAnimMinHeight is "110%";
+                The NoiseAnimMaxHeight is "115%";
+                The NoiseAnimDuration is "1s";
+                The NoiseAnimEasing is "linear";
+
+                The BackgroundWords is "Hi, I'm a TV";
+                The BackgroundWordsSize is "72pt";
+                The BackgroundWordsOpacity is "0.1";
+                The BackgroundWordsColor is "rgb(100, 255, 100)";
+                The BackgroundWordsPosition is "center center";
+            ?&gt;
+        </tw-passagedata>
+
+        <tw-passage class="current sugarcube"></tw-passage>
+
+        <div id="_readout"></div>
+
+        <tw-theme-json>
+            {"borderradius":"1rem","backgroundcolor":"black","glowcolor":"white","glowbrightness":"0.5","glowwidth":"6rem","glowrepeat":"5","noiseanimstatus":"On","noiseanimminopacity":"0.5","noiseanimmaxopacity":"0.75","noiseanimminleft":"-1.55%","noiseanimmaxleft":"0","noiseanimmintop":"-1%","noiseanimmaxtop":"0","noiseanimminwidth":"110%","noiseanimmaxwidth":"115%","noiseanimminheight":"110%","noiseanimmaxheight":"115%","noiseanimduration":"1s","noiseanimeasing":"linear","backgroundwords":"Hi, I'm a TV","backgroundwordssize":"72pt","backgroundwordsopacity":"0.1","backgroundwordscolor":"rgb(100, 255, 100)","backgroundwordsposition":"center center"}
+        </tw-theme-json>
+
+        <tw-additional-text>
+            This is the text that is not a part of the simple directive. It will appear normally in the page.
+        </tw-additional-text>
+
+        <div id="_controls">
+            <div id="_refreshContainer"><button id="_refresh">Refresh</button></div>
+            <div id="_containers"></div>
+        </div>
+
+        <script>
+            'use strict';
+
+            const controls = document.querySelector('#_containers');
+
+            const passage = document.querySelector('tw-passagedata');
+
+            let loaded = false;
+
+            Renderer.render('init');
+            
+            generateText();
+
+            generateControls();
+
+            function generateText() {
+                let text = '<?\n';
+
+                if (!loaded) {
+                    const obj = State.getSimpleVariables();
+                    getOwnPropertyNames(obj).forEach(function(name) {
+                        text += 'The ' + name + ' is "' + obj[name] + '";\n';
+                    });
+
+                    loaded = true;
+                } else {
+                    const containers =
+                        from(document.querySelectorAll('._container'));
+                    containers.forEach(function(container) {
+                        const children = container.children;
+                        if (children[0].checked) {
+                            const name = children[1].textContent;
+                            const value = children[2].value;
+                            text += 'The ' + name + ' is "' + value + '";\n'; 
+                        }
+                    });
+                }
+
+                text += '\n?>';
+
+                const additionalText = $('tw-additional-text')[0].textContent;
+
+                passage.textContent = text + additionalText;
+
+                document.querySelector('#_readout').innerText = text;
+
+                State.simpleVariables = {};
+
+                Renderer.render('init');
+            }
+
+            function generateControls() {
+                const obj = State.getSimpleVariables();
+                getOwnPropertyNames(obj).forEach(function(name) {
+                    const container = document.createElement('div');
+                    container.className = '_container';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.checked = true;
+                    container.appendChild(checkbox);
+
+                    const title = document.createElement('span');
+                    title.textContent = name;
+                    container.appendChild(title);
+
+                    const entry = document.createElement('input');
+                    container.appendChild(entry);
+                    entry.value = obj[name];
+
+                    controls.appendChild(container);
+                });
+            }
+
+            document.querySelector('#_refresh').onclick = fire;
+
+            function fire() {
+                generateText();
+            }
+        </script>
+    </body>
+</html>

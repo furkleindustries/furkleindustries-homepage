@@ -1,0 +1,856 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Gately Documentation Basics</title>
+        <style>
+            html, body {
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                box-sizing: border-box;
+            }
+            html {
+                font-size: 110%;
+            }
+            table {
+                border: 1px solid black;
+            }
+            td {
+                padding: 0.33rem 0.33rem 0.1rem 0.45rem;
+            }
+            tr:first-of-type td:first-of-type, tr.spacer + tr td:first-of-type {
+                font-weight: bold;
+            }
+            tr:last-of-type td {
+                padding-bottom: 0.33rem;
+            }
+            tr.spacer td {
+                border-bottom: 0.1rem solid black;
+            }
+            #tableOfContents, #content {
+                position: absolute;
+                top: 0;
+                max-height: 100%;
+                overflow-y: scroll;
+                padding: 1%;
+                margin: 0;
+                box-sizing: border-box;
+            }
+            #tableOfContents {
+                left: 0;
+                width: 25%;
+                padding-left: 1.5rem;
+                word-wrap: break-word;
+            }
+            #tableOfContents li {
+                margin-bottom: 0.33rem;
+            }
+            #content {
+                right: 0;
+                width: 75%;
+            }
+            #content h1 {
+                margin-top: 0;
+            }
+            #content ul {
+                list-style-type: none;
+            }
+            #content li {
+                margin-bottom: 0.5rem;
+            }
+            #content ul li > b {
+                size: 1.1rem;
+            }
+            #content h4 {
+                font-size: 105%;
+                margin: 1rem 0 0 0;
+                padding-left: 0.25rem;
+                border-bottom: 0.1rem solid black;
+            }
+            #content h4 + p + p {
+                margin-top: 0;
+            }
+            .note {
+                margin-left: 1.5rem;
+                margin-right: 1.5rem;
+                padding: 0.5rem;
+                border: 0.15rem solid rgba(0, 0, 0, 0.25);
+            }
+            .noteTitle {
+                font-weight: bold;
+                color: black;
+            }
+            .methodSignature, .macroExample {
+                margin: 0.5rem 1.5rem 0.5rem 1.5rem;
+                padding: 0.5rem;
+                border: 0.20rem outset;
+            }
+            .methodSignatureTitle {
+                font-weight: bold;
+            }
+            .macroArgument {
+                color: #a00;
+            }
+            .macroAttribute {
+                display: block;
+                color: #080;
+            }
+            .dataType {
+                color: #22b;
+            }
+            .argumentModifier {
+                color: rgba(0, 0, 0, 0.90);
+                font-style: italic;
+            }
+            .or {
+                color: black;
+            }
+            .usageTitle {
+                color: black;
+                font-weight: bold;
+            }
+            .macroExampleCode {
+                color: blue;
+                font-weight: bold;
+                cursor: pointer;
+            }
+            .macroOutputTitle {
+                font-weight: bold;
+                font-family: initial;
+            }
+            .macroOutput {
+                display: block;
+                font-family: monospace;
+            }
+            .macroResultTitle {
+                font-weight: bold;
+            }
+        </style>
+        <script src="jquery-2.1.3.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+        <ol id="tableOfContents"></ol>
+        <div id="content">
+            <h1>its the (pre-alpha) furkle format baby</h1>
+            <h3>Introduction</h3>
+            <p>Welcome! Gately is a story format. Gately is also a cat. This documentation will focus overwhelmingly on the former, with glancing, occasional references to the latter.</p>
+            <p>In Twine, the work of making text into an interactive story is split between the editor application and the story format. The editor allows you to create passages, enter text (links, macros, prose) into them, write story script and style, and export these into a single file. The format determines how these are exported, and therefore precisely how the story will appear and be interacted with by the player.</p>
+            <p>As of 07/2016 there are three current story formats for Twine 2: Harlowe, Sugarcube, and Snowman. Gately does not seek to replace these formats, though it does reduplicate a great deal of the functionality of Harlowe and Sugarcube, including allowing the macro syntax of either. Rather, what Gately seeks to do is to create a story format that allows a smooth gradation of control from the most simplistic, basic macros, to writing significant portions of your story in Javascript, HTML, and CSS. Ideally, this format will help you learn web development to the point where you feel comfortable writing more reusable, complex code outside the scope of individual Twine macros, and can use external frameworks or a more Javascript-oriented format like Snowman to write IF.</p>
+            <p>Here is a vanishingly brief summary of how Gately differentiates itself from prior formats and improves upon them:</p>
+            <ul>
+                <li><b>Data binding: </b>Through the use of the bind macro, Gately allows you to automatically update on-screen elements each time a Twine variable is changed, rather than having to update them on subsequent screens or with a constantly-running timer. This dramatically simplifies the process of making rich on-screen controls and displays like inventories and maps without the use of Javascript.</li>
+                <li><b>Deeper macro usage: </b>Gately contains macros that allow you to effect low-level access to Javascript properties and functions, meaning that if you're uncomfortable with script blocks or using the story script, you can utilize Javascript within macros, and use the return values of those functions as arguments passed to macros or as rendered text. (This is not wholly dissimilar to the concept of calling "unmanaged code" in a safe, managed environment.)</li>
+                <li><b>Format interoperation: </b>Through the use of the Config object or related macros, the format settings can be changed in real-time, on a passage-by-passage basis. Want to change whether a player can undo or redo for one or more passages? Want to make some passages render cascading like Jonah, and some rendered in-place like Sugarcube or Harlowe? Want the newline (\n) characters in some passages (like prose passages) to be converted to <code>&lt;br&gt;</code>, and some (like Twine macro passages) to be left unconverted? You can do all of that, at whichever points you want in your story.</li>
+                <li><b>Transcript recording and full-stack debugging: </b>Gately includes a feature allowing all story actions, whether text changes, player input, or variable state changes, to be recorded by a player. This transcript can then be stepped through at a per-change level, allowing deep debugging of Twine macros and Javascript, and also allows authors to get a sense of precisely how their test users are interacting with their work in progress.</li>
+                <li><b>Audio channels and volume control: </b>Gately has a broad range of macros designed to make integrating audio into your Twine simple and easily controlled at any point in the story. There are additionally controls automatically inserted into the story, allowing the user to determine the volume of the whole story, and of individual, author-defined channels, like "Music" and "SFX," etc.</li>
+                <li><b>Accessibility options: </b>A menu option allows users to effect cosmetic changes to the appearance of the story, such as increasing the brightness or contrast and changing the font size.</li>
+                <li><b>Large paws: </b>Enormous, fluffy footers with big pink jellybeans. If you stick your finger out and scratch her with the other hand she holds your finger in her paw.</li>
+                <li><b>World modeling: </b>Gately includes a comprehensive set of functions and object types designed to help you create an abstract, behind-the-scenes model of your story and the locations, objects, and living things within. This is especially useful in terms of creating and testing relationships between model instances. There are functions allowing simple printing of model data with template strings, and a CSS-style selector system allowing the search and selection of one or more models across the scope of your story.</li>
+                <li><b>And more!: </b>There are more functions in the story format, and the cat.
+            </ul>
+
+            <h3>Special Passages</h3>
+            <p>There are several types of special passages in Gately. Each of these (with one exception) is denoted through use of the Twine editor's tag function, through which you can add tags to each individual passage. Many of these can be used simultaneously on the same passage should you want to combine these functions, and as many of each can be added.</p>
+            <ul>
+                <li><b>load: </b>The text within a passage tagged with "load" is parsed and executed when the story document is first opened by the player.</li>
+                <li><b>header: </b>Parsed and executed each time a passage is loaded, and inserted at the top of that passage. Headers are ordered within the passage according to the order in which they were originally created in the Twine editor.</li>
+                <li><b>footer: </b>Parsed and executed each time a passage is loaded, and inserted at the bottom of that passage. Footers are ordered within the passage according to the order in which they were originally created in the Twine editor.</li>
+                <li><b>script: </b>A passage tagged "script" is parsed and executed at load time. These are, like headers and footers, executed in the order in which they are originally created in the editor, so it may become necessary to include a manner to reorder them if people need some script passages to be dependent on the work performed by other script passages. In general, though, it is not a good idea to have any tagged passage be interdependent on another to execute properly.</li>
+                <li><b>style: </b>A passage tagged "style" is converted into an HTML <code>&lt;style&gt;</code> element and added to the <code>&lt;body&gt;</code> element. Each of these is given a data-src attribute with the value "user-added style".</li>
+                <li><b>unload: </b>Is parsed and executed when the user closes the story.</li>
+                <li><b>debug: </b>The debug attribute can be used in two basic ways: firstly, as a tag, and secondly as a unique passage name. In the former case, debug semantics (TODO - add link) will be used on that specific passage. If a passage named "debug" is found, the whole of the story will have debug semantics used.</li>
+            </ul>
+
+            <h3>World Model</h3>
+            <a href="worldmodel.html">worldmodel</a>
+
+            <h3>Audio Mixer</h3>
+            <a href="audioMixer.html">audio mixer</a>
+
+            <h3>Transcripting and Debugging</h3>
+            <a href="transcriptAndDebugging.html">transcript and debugging</a>
+
+            <h3>Settings and Disability Options</h3>
+            <a href="settingsAndDisabilityOptions.html">transcript and debugging</a>
+
+            <h3>Tracery</h3>
+            <a href="tracery.html">tracery</a>
+
+            <h3>Runtime Configuration</h3>
+            <a href="runtimeConfiguration.html">runtime configuration</a>
+
+            <h3>Macros</h3>
+            <p>In real life, Gately has very few macros, mostly just (eatfood:) and (aaaaa:). Here on the Internet, though, Gately has an enormous number of macros designed to make it as easy as possible to use, and to make its utility both broad and deep for the widest number of users. The following is a list of all current Gately macros, and a summary of their individual uses and method signatures (the arguments, both required and optional, and the return value).</p>
+            <p class="note"><span class="noteTitle">Note:</span> Every one of the macros in Gately can be called either like so: lowercaseform, or like so: lower-case-form, wherein dashes separate each word. This is not a result of removing dashes before the macro name is parsed, so for example lo-wer-case-form would not work, nor would lower--case-form, unless you had defined either of these two macros.</p>
+            <p class="note"><span class="noteTitle">Note:</span> You can click on any of the macro examples (bolded and highlighted in blue, and displaying a pointer cursor in non-mobile environments) to toggle all examples between Harlowe syntax and Sugarcube syntax. Both syntaxes are fully supported in Gately. It's important to note that this categorically does <b>not</b> mean that Gately is a superset of the functions of Harlowe and Sugarcube, nor that they will ever become this. Rather, consider any code you can use in both Harlowe and Gately, or Sugarcube and Gately, essentially value-added, and expect the three languages to continue to diverge as each format's respective author and maintainers to improve and specialize each format.</p>
+
+            <h4>set</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">Twinescript variable</span> toSet</span>, <span class="macroArgument"><span class="dataType">string</span> equalType</span>, <span class="macroArgument"><span class="dataType">any</span> value</span>, <span class="argumentModifier">repeatable by toSet, equalType, value triplet</span></p>
+            <p>The set macro is the method by which all Twinescript variables are set, barring direct Javascript access by the author. This macro can be used to set one or more variables, each segment of which is divided into <i>triplets</i>. A triplet, in this case, takes the following form:</p>
+            <ol>
+                <li>The name of the variable to be set, prefixed by the Twinescript-variable-denoting character <b>$</b>. This argument is unique in all Gately macros in the sense that it is the only argument wherein a Twinescript variable will not be converted to its current value before it is received by the containing macro.</li>
+                <li>The equal type. This can take several forms:
+                    <ul>
+                        <li><b>=</b>, which sets the variable to the proceeding value</li>
+                        <li><b>to</b>, which is automatically converted to <b>=</b></li>
+                        <li><b>+=</b>, which adds the proceeding value to the variable's current value</li>
+                        <li><b>-=</b>, which subtracts the proceeding value from the variable's current value</li>
+                        <li><b>*=</b>, which multiplies the variable's current value by the proceeding value</li>
+                        <li><b>/=</b>, which divides the variable's current value by the proceeding value</li>
+                        <li><b>%=</b>, which performs the <i>modulo operation</i> on the variable's current value, setting the variable to the remainder of dividing it by the proceeding value, e.g. 4 %= 3 is 1, 5 %= 1 is 0, 6 %= 4 is 2, etc.</li>
+                    </ul>
+                </li>
+                <li>The value to be set (or, for the complex equal types, used as part of the equation to produce the new value). This value can be produced through Twinescript variables, strings, numbers, booleans, macros, raw Javascript, or any valid combination of the aforementioned. Note, however, that while every effort is made to properly eval Javascript included as macro arguments, Gately is not explicitly designed to do so, nor to guarantee the proper, predictable function thereof. In effect, using plain, raw Javascript is considered undefined behavior; if you would still rather do this than use script blocks or macros, predictable and effective results can be attained by wrapping raw Javascript in a <code>&lt;tw-argument&gt;</code> (TODO – add link) element.</li>
+            </ol>
+            <p class="note"><span class="noteTitle">Note:</span> The set macro is unique in that it is stateful. The set variables will retain their value in all future passages, until they are again set. Additionally, the variable will remain unset in passages prior to the first in which it is set, so regardless of whether the variable has been set within the current playthrough, it is often possible to rewind to states in which the variable is unset, and fast-forward to states in which it is set again.</p>
+            <p class="note"><span class="noteTitle">Note:</span> In Gately, as in all Twine formats, the value of an "unset" variable is 0. In practice, this means that while it is possible to perform arithmetic operations on unset variables, and pass it as an argument, the results may not be what you desire.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(set: $foo to 1, $bar to 2, $baz to 3)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> none</span><span class="macroResult"><span class="macroResultTitle">Result:</span> $foo is 1, $bar is 2, $baz is 3.</span></p>
+
+            <h4>print</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> value</span>, <span class="argumentModifier">repeatable</span></p>
+            <p>The print macro accepts any data, and any number of arguments, and prints the result of this data. Specifically, the arguments are joined together into a single string, this string is parsed by the Gately parser, and the value returned by the parser is returned to the containing macro or printed to the page. In effect, this allows the print macro to act as a safe form of eval for Gately Twinescript contained in strings. However, this is often a difficult and ineffective way to execute macros, given that they must be contained within strings, and therefore any macros therein must restrict themselves to the other (single or double) quote character, or escape identical quote characters with a backspace character.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The print macro is not necessary to display the value of Twinescript variables to the page; you can simply write the variable itself outside any macro, and it will be converted to its corresponding value.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(print: "foo! bar!")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> text</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Prints <code>foo! bar</code>.</span></p>
+
+            <h4>silently</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> none<span class="macroAttribute">double tag</span></p>
+            <p>The silently macro has no effect in itself. Rather, its sole function is to ensure that anything contained inside is executed, but neither displayed on-screen nor returned to any macro that might contain the silently macro.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(silently:)[foo]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> none</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Displays nothing.</span></p>
+
+            <h4>if, elseif/else-if, else</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">boolean</span> <span class="or">or</span> <span class="dataType">HTML element</span> bool</span><span class="macroAttribute">double tag</span></p>
+            <p>The if, elseif, and else macros are an interrelated set of macros used to test conditional logic, and to create chains of conditions whose execution is interdependent. In its simplest form, an if macro tests whether its single argument evaluates to true or false. If the argument evaluates to true, the contents of the macro are executed and returned; if not, the contents are discarded. The elseif and else macros can be placed after an if macro to handle the latter scenario - when the argument to the if macro evaluates to false, execution carries through to the next elseif or else macro, working in the same fashion. The else macro, should it be reached in that chain, will always execute; it can be thought of as saying "if nothing before me tests as true, execute me." Because of this, the else macro neither requires nor takes any arguments.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The order of if, elseif, and else macros matters, both in terms of which is evaluated first (and therefore which proceeding macros are ignored should a true statement be found), and in terms of the order in which they are allowed to be written. Specifically, a single if statement must come first, followed by one or more elseif statements, followed by a single else statement. Putting an else before an elseif, for example, will cause an error.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The if macro is unique in that, while it is not deferred, its behavior is similar to that of a deferred macro. For obvious reasons, code contained within the if/elseif/else macros cannot be executed until it is determined which in any given chain is true, and therefore where execution will stop. It is also for this reason that nearly all of the logic for the if macro, and all the logic for the elseif and else macros, is handled outside of the <code>if</code>/<code>elseif</code>/<code>else</code> functions contained within the Macro object.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode" data-override-type="if"><br>(if: $foo is 1)[<br>&nbsp;&nbsp;&nbsp;&nbsp;one<br>] (elseif: $foo is 2)[<br>&nbsp;&nbsp;&nbsp;&nbsp;two<br>] (else:)[<br>&nbsp;&nbsp;&nbsp;&nbsp;neither<br>]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> content of first true block, or none</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Will output <code>one</code>, <code>two</code>, or <code>neither</code>, depending on the value of <code>$foo</code>.</span></p>
+
+            <h4>click</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> linkText</span>, <span class="macroArgument"><span class="dataType">Twinescript</span> callback</span><span class="macroAttribute">double tag</span><span class="macroAttribute">double tag</span><span class="macroAttribute">click handler</span></p>
+            <p>The click macro creates a link, superficially identical to the ordinary passage link. When it is clicked, the callback is executed. Unlike the <code>linkreveal</code> macro, the click link does not change on click. It also does not disappear; the code within the callback will be executed once every time the link is clicked.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode"><br>(click: "Click me!")[<br>&nbsp;&nbsp;&nbsp;&nbsp;(alert: "foo")<br>]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Alerts "foo" when clicked.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> When the player clicks the link (having the text "Click me!"), a browser alert window appears, containing the text <code>"foo"</code>.</span></p>
+
+            <h4>linkgoto, link-goto</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> text</span>, <span class="macroArgument"><span class="dataType">string</span> linkName</span> <span class="argumentModifier">optional</span><span class="macroAttribute">click handler</span></p>
+            <p>The linkgoto macro creates a <code>tw-link</code> element, identical to the kind created by [[text]], [[text->linkName]], and [[text|linkName]]. If just the text argument is set, that argument is used as both the inner text of the link and the name of the passage to which the link leads. If both are set, the text argument is used for the text and the linkName argument corresponds to the name of the passage to which the link leads.</p>
+            <p class="note"><span class="noteTitle">Note:</span> There's no overriding reason to use the linkgoto macro unless you're programmatically defining one or more portions of the link. A [[foo]]-formatted link will be converted into the same HTML structure, and additionally the raw HTML structure can be written in the passage.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(linkgoto: "foo", "bar")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;tw-link class="passage" name="bar"&gt;foo&lt;/tw-link&gt;</span><span class="macroResult"><span class="macroResultTitle">Result: </span>The macro will be converted to a passage link, identical to the element that is created from [[foo-&gt;bar]], [[bar&lt;-foo]], and [[foo|bar]].</span></p>
+
+            <h4>linkreveal, link-reveal</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature: </span><span class="macroArgument"><span class="dataType">string</span> linkText</span>, <span class="macroArgument"><span class="dataType">string</span> revealText</span><span class="macroAttribute">double tag</span><span class="macroAttribute">defer</span><span class="macroAttribute">click handler</span></p>
+            <p>Like the link macro, the linkreveal macro creates a <code>&lt;tw-link&gt;</code> element, but rather than navigating to a new passage on click, the link is replaced with the revealText argument.</p>
+            <p class="note"><span class="noteTitle">Note:</span> As with the print macro, the revealText string is parsed before it is displayed on-page or returned, so any macro that will fit in a string without needing escaped quotes will be executed identically as if it were written outside a linkreveal macro.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(linkreveal: "foo", "bar")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;tw-link class="reveal"&gt;&lt;span&gt;foo&lt;/span&gt;&lt;tw-deferrer class="hidden"&gt;bar&lt;/tw-deferral&gt;&lt;/tw-link&gt;</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A link with the text "foo" is created, which when clicked is replaced with the text "bar".</span></p>
+
+            <h4>cyclinglink, cycling-link</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> variableName</span> <span class="argumentModifier">optional</span>, <span class="macroArgument"><span class="dataType">string</span> cycleIndex</span> <span class="argumentModifier">repeatable</span>, <span class="macroArgument"><span class="dataType">boolean</span> out</span> <span class="argumentModifier">optional</span>, <span class="macroArgument"><span class="dataType">string</span> passageName</span> <span class="argumentModifier">optional</span><span class="macroAttribute">click handler</span></p>
+            <p>The cycling link is an old mainstay in Twine, dating back to Twine 1. When clicked, the link switches its text through a list of strings provided as arguments to the function. If the first non-whitespace character in the first argument begins with a $, the Twinescript variable matching that argument is updated to reflect the current link text each time the link is clicked. If the second to last argument is the boolean true, and the last argument is a string, neither the second-to-last nor the last arguments are displayed, and the story is navigated to the passage whose name matches the last argument when the end of the strings to display is reached. If the second to last argument is not the boolean true or the last argument is not a string, the macro cycles through the list of strings forever.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(cyclinglink: "bar", "baz", "bux")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;tw-link class="cycling"&gt;bar&lt;/tw-link&gt;</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The link starts with the text "bar", and cycles through "baz" and "bux". When the macro reaches the end of the string list, it starts again from the beginning, and so on forever.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(cyclinglink: "$foo", "bar", "baz", "bux")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;tw-link class="cycling setter"&gt;bar&lt;/tw-link&gt;</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The link starts with the text "bar", and cycles through "baz" and "bux". Each time it is clicked, the Twinescript variable <code>$foo</code> is updated to reflect the new value. Upon reaching the end of the string list, it starts again from the beginning, and so on forever.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(cyclinglink: "$foo", "bar", "baz", "bux", true, "outPassage")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;tw-link class="cycling setter out"&gt;bar&lt;/tw-link&gt;</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The link starts with the text "bar", and cycles through "baz" and "bux". Each time it is clicked, the Twinescript variable <code>$foo</code> updates to reflect the new value. When the player clicks the link reading "bux", they are navigated to the passaged named "outPassage". If the player rewinds to the page, the macro will have cycled back to the beginning.</span></p>
+
+            <h4>br, newline, new-line</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature: </span>none</p>
+            <p>Converts the macro to a <code>&lt;br&gt;</code> element, creating a new line in its parent element. The newline macro is merely a reference to the br macro and calling either is completely identical.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(br:)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;br&gt;</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A <code>&lt;br&gt;</code> element is created, separating its preceding and proceeding nodes by a single new line.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(newline:)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Identical to the above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Identical to the above.</span></p>
+
+            <h4>display</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature: </span><span class="macroArgument"><span class="dataType">string</span> passageName</span></p>
+            <p>The display macro allows the programmatic reuse of content contained in a passage that is not the current one. In practice, this means that you can write prose snippets and/or the equivalent of small, general-purpose Twinescript methods, and insert these as desired in another passage.</p>
+            <p class="note"><span class="noteTitle">Note:</span> Currently there is a bug or inadequacy in Gately such that the runtime does not check to see whether a passage ends up displaying itself. If this happens, an infinite loop will occur, and the story will either crash or hang permanently. Until a workaround or fix for this is found, please ensure when using this macro that at no point a passage ends up displaying itself.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(display: "foo")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> The entire parsed structure of the named passage.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The passage named "foo", and any content displayed at any level in that passage, is included in the current passage.</span></p>
+
+            <h4>replace</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature: </span><span class="macroArgument"><span class="dataType">string</span> selectorOrMatch</span>, <span class="macroArgument"><span class="dataType">string</span> replaceText</span></p>
+            <p>Given either a string to match incidences in the whole of the passage, or a CSS selector matching an element ID or classes, the replace macro replaces in the first case the content in the matched elements, and in the second case each incidence of the match string in all nodes in the passage.</p>
+            <p class="note"><span class="noteTitle">Note:</span> If a string match is provided (rather than a CSS selector), the macro can only search text nodes in the current passage, so any text resultant from setting the <code>content</code> attribute on <code>::before</code> and <code>::after</code> pseudo-elements will not be altered.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(replace: "#foo", "bar")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> none</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The content of the first element with the id "foo" in the current passage is replaced with the text "bar".</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(replace: ".foo", "bar")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span>none </span><span class="macroResult"><span class="macroResultTitle">Result:</span> The content of the every element with the class "foo" in the current passage is replaced with the text "bar".</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(replace: "foo", "bar")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> none</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Every incidence of the string "foo" in the current passage is replaced with the text "bar".</span></p>
+
+            <h4>textcolor, textcolour</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> <span class="or">or</span> <span class="dataType">HTML element</span> inner</span>, <span class="macroArgument"><span class="dataType">string</span> value</span><span class="macroAttribute">double tag</span></p>
+            <p>The textcolor macro functions somewhat differently depending on the data type of the inner argument. If the inner argument is a string, it creates a <code>span</code> element and sets the text content to inner; if the inner argument is an HTML element, it modifies that element. The color rule of the style of the <code>span</code> or inner element is set to the value argument, which can be any value normally accepted by the aforementioned CSS rule: named color, hexadecimal value, and functional color notation (rgb, rgba, hsl, hsla, etc.).</p>
+            <p class="note"><span class="noteTitle">Note:</span> The textcolour macro is identical to the textcolor macro, and is provided solely to accomodate the desired spelling.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(textcolor: "red")[foo]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;span style="color: red;"&gt;foo&lt;/span&gt;</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A span with the red-colored text "foo" is created.</span>
+
+            <h4>textstyle</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> <span class="or">or</span> <span class="dataType">HTML element</span> inner</span>, <span class="macroArgument"><span class="dataType">string</span> value <span class="argumentModifier">repeatable</span></span><span class="macroAttribute">double tag</span></p>
+            <p>The textcolor macro functions somewhat differently depending on the data type of the inner argument. If the inner argument is a string, it creates a <code>span</code> element and sets the text content to inner; if the inner argument is an HTML element, it modifies that element. Then, with each of the arguments provided after inner, it applies the corresponding CSS text or font rule to the span or element passed as inner.
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>font-family</td>
+                            <td>cursive</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>fantasy</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>monospace</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>sans-serif</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>serif</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+
+                        <tr>
+                            <td>font-size</td>
+                            <td>large</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>larger</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>medium</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>small</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>smaller</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>x-large</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>x-small</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>xx-large</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>xx-small</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+                        
+                        <tr>
+                            <td>font-stretch</td>
+                            <td>condensed</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>expanded</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>extra-condensed</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>extra-expanded</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>narrower</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>semi-condensed</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>semi-expanded</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ultra-condensed</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ultra-expanded</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>wider</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+                        
+                        <tr>
+                            <td>font-style</td>
+                            <td>italic</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>normal</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>oblique</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>small-caps</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+
+                        <tr>
+                            <td>font-weight</td>
+                            <td>bold</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>bolder</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>lighter</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+                        
+                        <tr>
+                            <td>text-combine-upright</td>
+                            <td>all</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>none</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+
+                        <tr>
+                            <td>text-decoration</td>
+                            <td>blink</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>line-through</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>overline</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>underline</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+                        
+                        <tr>
+                            <td>text-decoration</td>
+                            <td>mixed</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>sideways</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>upright</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+                        
+                        <tr>
+                            <td>text-overflow</td>
+                            <td>clip</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ellipsis</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+
+                        <tr>
+                            <td>text-rendering</td>
+                            <td>auto</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>geometricPrecision</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>optimizeLegibility</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>optimizeSpeed</td>
+                        </tr>
+
+                        <tr class="spacer"><td></td><td></td></tr>
+                        
+                        <tr>
+                            <td>text-transform</td>
+                            <td>capitalize</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>lowercase</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>uppercase</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </p>
+            <p class="note"><span class="noteTitle">Note:</span> While you can apply nearly any text or font rule to a passage, more complicated designs may be better-served either using the (css:) macro or writing the HTML and CSS yourself. Choose what's easiest for you, but keep in mind there's usually multiple ways of doing anything in Gately, and none are automatically, canonically right.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(textstyle: "foo", "capitalize", "geometricPrecision", "ellipsis")[foo]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> &lt;span style="text-transform: capitalize; text-rendering: geometricPrecision; text-overflow: ellipsis;"&gt;foo&lt;/span&gt;</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A span with the text-transform: capitalize rule, the text-rendering: geometricPrecision rule, the text-overflow: ellipsis rule, and the text "foo" is created.</span></p>
+
+            <h4>transition</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> TODO</p>
+
+            <h4>array, a</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">any</span> value</span> <span class="argumentModifier">repeatable</span></p>
+            <p>The array macro takes any number of arguments, places each within an array, <span class="argumentModifier">stringifies</span> the array, and returns the string. This can be used either as an argument, or saved to a variable with <code>set</code>.</p>
+            <p class="note"><span class="noteTitle">Note:</span> There's not really any conceivable reason you'd ever need to print a <span class="argumentModifier">JSON</span> representation of an array, so the array macro is (as far as I can imagine) only useful to pass as an argument to another macro.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The a macro is identical to the array macro. This is primarily for compatibility with Harlowe Twinescript and may change in the future, particularly given its ambiguity with the <code>&lt;a&gt;</code> HTML element.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(array: "a", "b", 2, 5, "quux")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '["a","b",2,5,"quux"]'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> An array of the following form is created: ["a", "b", 2, 5, "quux"], where the first two indices are strings, the following two numbers, and the last a string. JSON.stringify is then called on this array, and the stringified form is returned by the array</span></p>
+
+            <h4>addathead</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature: </span><span class="macroArgument"><span class="dataType">array</span> <span class="or">or</span> <span class="dataType">JSON representation of array</span> <span class="or">or</span> <span class="dataType">string</span>  <span class="or">or</span> <span class="dataType">string containing Twinescript variable name</span> arrOrStringOrVarName</span>, <span class="macroArgument"><span class="dataType">any</span> value</span></p>
+            <p>Adds each argument provided after the arrOrStringOrVarName to the front of the provided string or array, then returns either the string, or a JSON representation of the array. If the arrOrStringOrVarName argument is a Twinescript variable name, the Twinescript variable is updated, along with associated direct bindings, if any exist.</p>
+            <p class="note"><span class="noteTitle">Note:</span> If you want to use an array literal (rather than a JSON string) for the arrOrStringOrVarName argument, wrap the array literal in a <code>&lt;tw-argument&gt;</code> element. This will allow the array literal to pass through to the macro unchanged, without any commas therein being interpreted as denoting a new macro argument.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addathead: &lt;tw-argument&gt;["a", "b", "c", "d"]&lt;/tw-argument&gt;, "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '["e","f","g","h","a","b","c","d"]'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Each of the arguments following arrOrStringOrVarName is added in argument order to the front of the array. This array is then converted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addathead: '["a","b","c","d"]', "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arrOrStringOrVarName argument is parsed into an array, then each of the arguments following arrOrStringOrVarName is added in argument order to the front of the array. This array is then reconverted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addathead: "abcd", "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "efghabcd"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The relevant arguments are added to the front of the arrOrStringOrVarName string, and this string is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addathead: "$foo", "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Assuming the Twinescript variable $foo represents the string "abcd", the output is the same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The $foo variable is retrieved from the current passage's variable state, and, if this variable is a string or array, the relevant arguments are added to the front. The $foo Twinescript variable is updated with the new contents, and likewise any direct bindings associated with $foo are updated.</span></p>
+
+            <h4>addatend</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">array</span> <span class="or">or</span> <span class="dataType">JSON representation of array</span> <span class="or">or</span> <span class="dataType">string</span> <span class="or">or</span> <span class="dataType">string containing Twinescript variable name</span> arrOrStringOrVarName</span>, <span class="macroArgument"><span class="dataType">any</span> value</span></p>
+            <p>Adds each argument provided after the arrOrStringOrVarName to the end of the provided string or array, then returns either the string, or a JSON representation of the array. If the arrOrStringOrVarName argument is a Twinescript variable name, the Twinescript variable is updated, along with associated direct bindings, if any exist.</p>
+            <p class="note"><span class="noteTitle">Note:</span> If you want to use an array literal (rather than a JSON string) for the arrOrStringOrVarName argument, wrap the array literal in a <code>&lt;tw-argument&gt;</code> element. This will allow the array literal to pass through to the macro unchanged, without any commas therein being interpreted as denoting a new macro argument.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatend: &lt;tw-argument&gt;["a", "b", "c", "d"]&lt;/tw-argument&gt;, "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '["a","b","c","d","e","f","g","h"]'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Each of the arguments following arrOrStringOrVarName is added in argument order to the end of the array. This array is then converted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatend: '["a","b","c","d"]', "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arrOrStringOrVarName argument is parsed into an array, then each of the arguments following arrOrStringOrVarName is added in argument order to the end of the array. This array is then reconverted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatend: "abcd", "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "abcdefgh"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The relevant arguments are added to the front of the arrOrStringOrVarName string, and this string is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatend: "$foo", "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Assuming the Twinescript variable $foo represents the string "abcd", the output is the same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The $foo variable is retrieved from the current passage's variable state, and, if this variable is a string or array, the relevant arguments are added to the front. The $foo Twinescript variable is updated with the new contents, and likewise any direct bindings associated with $foo are updated.</span></p>
+
+            <h4>addatindex</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">array</span> <span class="or">or</span> <span class="dataType">JSON representation of array</span> <span class="or">or</span> <span class="dataType">string</span> <span class="or">or</span> <span class="dataType">string containing Twinescript variable name</span> arrOrStringOrVarName</span>, <span class="dataType">string representation of number</span> index</span>, <span class="macroArgument"><span class="dataType">any</span> value</span></p>
+            <p>Adds each argument after the index argument to the provided string or array, at the index indicated by the index argument. Then, depending on the data type of the arrOrStringOrVarName the modified string or modified, JSON-stringified array is returned. If the arrOrStringOrVarName argument is a Twinescript variable name, the Twinescript variable is updated, along with associated direct bindings, if any exist</p>
+            <p class="note"><span class="noteTitle">Note:</span> If you want to use an array literal (rather than a JSON string) for the arrOrStringOrVarName argument, wrap the array literal in a <code>&lt;tw-argument&gt;</code> element. This will allow the array literal to pass through to the macro unchanged, without any commas therein being interpreted as denoting a new macro argument.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatindex: &lt;tw-argument&gt;["a", "b", "c", "d"]&lt;/tw-argument&gt;, 2, "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '["a","b","e","f","g","h","c","d"]'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Each of the arguments following arrOrStringOrVarName is added in argument order at the 2nd position of the array. This array is then converted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatindex: '["a","b","c","d"]', 2, "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arrOrStringOrVarName argument is parsed into an array, then each of the arguments following arrOrStringOrVarName is added in argument order to the end of the array. This array is then reconverted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatindex: "abcd", 2, "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "abefghcd"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The relevant arguments are added at the 2nd index of the arrOrStringOrVarName string, and this string is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(addatindex: "$foo", 2, "e", "f", "g", "h")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Assuming the Twinescript variable $foo represents the string "abcd", the output is the same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The $foo variable is retrieved from the current passage's variable state, and, if this variable is a string or array, the relevant arguments are added to the 2nd index. The $foo Twinescript variable is updated with the new contents, and likewise any direct bindings associated with $foo are updated.</span></p>
+
+            <h4>removeathead</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature: </span><span class="macroArgument"><span class="dataType">array</span> <span class="or">or</span> <span class="dataType">JSON representation of array</span> <span class="or">or</span> <span class="dataType">string</span>  <span class="or">or</span> <span class="dataType">string containing Twinescript variable name</span> arrOrStringOrVarName</span>, <span class="macroArgument"><span class="dataType">number</span> numberToRemove</span></p>
+            <p>Removes a single element from the front of the string or array, then returns the string or JSON-stringified array</p>
+            <p class="note"><span class="noteTitle">Note:</span> If you want to use an array literal (rather than a JSON string) for the arrOrStringOrVarName argument, wrap the array literal in a <code>&lt;tw-argument&gt;</code> element. This will allow the array literal to pass through to the macro unchanged, without any commas therein being interpreted as denoting a new macro argument.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeathead: &lt;tw-argument&gt;["a", "b", "c", "d"]&lt;/tw-argument&gt;, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '["c","d"]'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Two values are removed from the front of the array..</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeathead: '["a","b","c","d"]', 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arrOrStringOrVarName argument is parsed into an array, then two values are removed from the front. This array is then reconverted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeathead: "abcd", 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "cd"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The first two characters are removed from the arrOrStringOrVarName string, and this string is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeathead: "$foo", 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Assuming the Twinescript variable $foo represents the string "abcd", the output is the same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The $foo variable is retrieved from the current passage's variable state, and, if this variable is a string or array, two values are removed from the front. The $foo Twinescript variable is updated, and likewise any direct bindings associated with $foo are updated.</span></p>
+
+            <h4>removeatend</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">array</span> <span class="or">or</span> <span class="dataType">JSON representation of array</span> <span class="or">or</span> <span class="dataType">string</span>  <span class="or">or</span> <span class="dataType">string containing Twinescript variable name</span> arrOrStringOrVarName</span>, <span class="macroArgument"><span class="dataType">number</span> numberToRemove</span></p>
+            <p>Removes a single element from the end of the string or array, then returns the string or JSON-stringified array</p>
+            <p class="note"><span class="noteTitle">Note:</span> If you want to use an array literal (rather than a JSON string) for the arrOrStringOrVarName argument, wrap the array literal in a <code>&lt;tw-argument&gt;</code> element. This will allow the array literal to pass through to the macro unchanged, without any commas therein being interpreted as denoting a new macro argument.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatend: &lt;tw-argument&gt;["a", "b", "c", "d"]&lt;/tw-argument&gt;, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '["c","d"]'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Two values are removed from the end of the array..</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatend: '["a","b","c","d"]', 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arrOrStringOrVarName argument is parsed into an array, then two values are removed from the end. This array is then reconverted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatend: "abcd", 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "cd"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The last two characters are removed from the arrOrStringOrVarName string, and this string is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatend: "$foo", 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Assuming the Twinescript variable $foo represents the string "abcd", the output is the same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The $foo variable is retrieved from the current passage's variable state, and, if this variable is a string or array, two values are removed from the end. The $foo Twinescript variable is updated, and likewise any direct bindings associated with $foo are updated.</span></p>
+
+            <h4>removeatindex</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">array</span> <span class="or">or</span> <span class="dataType">JSON representation of array</span> <span class="or">or</span> <span class="dataType">string</span>  <span class="or">or</span> <span class="dataType">string containing Twinescript variable name</span> arrOrStringOrVarName</span>, <span class="macroArgument"><span class="dataType">number</span> index</span>, <span class="macroArgument"><span class="dataType">number</span> numberToRemove</span></p>
+            <p>Removes a specified number of values at the provided index. Then, depending on the data type of the arrOrStringOrVarName the modified string or modified, JSON-stringified array is returned. If the arrOrStringOrVarName argument is a Twinescript variable name, the Twinescript variable is updated, along with associated direct bindings, if any exist</p>
+            <p class="note"><span class="noteTitle">Note:</span> If you want to use an array literal (rather than a JSON string) for the arrOrStringOrVarName argument, wrap the array literal in a <code>&lt;tw-argument&gt;</code> element. This will allow the array literal to pass through to the macro unchanged, without any commas therein being interpreted as denoting a new macro argument.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatindex: &lt;tw-argument&gt;["a", "b", "c", "d"]&lt;/tw-argument&gt;, 1, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '["a","d"]'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Two values are removed at the 1st index of the array. This array is then converted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatindex: '["a","b","c","d"]', 1, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arrOrStringOrVarName argument is parsed into an array, then two elements are removed from the 1st index of the array. This array is then reconverted to JSON and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatindex: "abcd", 1, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "ad"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Two values are removed from the 1st index of the arrOrStringOrVarName string, and this string is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(removeatindex: "$foo", 1, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Assuming the Twinescript variable $foo represents the string "abcd", the output is the same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The $foo variable is retrieved from the current passage's variable state, and, if this variable is a string or array, two values are removed from the 1st index. The $foo Twinescript variable is updated, and likewise any direct bindings associated with $foo are updated.</span></p>
+
+            <h4>arrayfilter</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span><span class="macroArgument"><span class="dataType">array</span> <span class="or">or</span> <span class="dataType">JSON-stringified array</span> array</span>, <span class="macroArgument"><span class="dataType">string</span> variable</span>, <span class="macroArgument"><span class="dataType">Twinescript</span> callback</span><span class="macroAttribute">double tag</span><span class="macroAttribute">defer</span></p>
+            <p>Given a Twinescript callback function, each value in the array is tested. If the result of the function is an empty string, the boolean false, or the string "false", the value is not included in the new returned array; if the value is anything else, the value is included in the new returned array.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode" data-override-type="arrayfilter"><br>(arrayfilter: &lt;tw-argument&gt;[1,2,3,4,5]&lt;/tw-argument&gt;, "$this")[<br>&nbsp;&nbsp;&nbsp;&nbsp;(if: $this &gt; 2)[true]<br>]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "[3,4,5]"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The first two values of the array (1, 2) do not pass the filter callback function, so they are not included in the returned array. The remaining 3 values (3, 4, 5) are greater than 2, and return true, so they are included.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode" data-override-type="arrayfilter"><br>(arrayfilter: "[1,2,3,4,5]", "$this")[<br>&nbsp;&nbsp;&nbsp;&nbsp;(if: $this &gt; 2)[true]<br>]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Same as above.</span></p>
+
+            <h4>dict</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> key</span>, <span class="macroArgument"><span class="dataType">any</span> value</span>, <span class="argumentModifier">repeatable by key-value pair</span></p>
+            <p>Each argument is separated into pairs of the form key, value, and each of these pairs is assigned to a new Javascript object. (A Javascript object is reasonably similar to dictionaries as used in Python and C#.) The object is then JSON-stringified and returned.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(dict: 'a', 1, 'b', 2, 'c', 3)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '{"a":1,"b":2,"c":3}'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arguments are added to the new, empty object in key-value pairs, as a: 1, b: 2, c: 3. Then the object is stringified and returned.</span></p>
+
+            <h4>setkeyvalues</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">Javascript object</span> <span class="or">or</span> <span class="dataType">JSON stringified object</span> dict</span>, <span class="macroArgument"><span class="dataType">string</span> key</span>, <span class="macroArgument"><span class="dataType">any</span> value</span>, <span class="argumentModifier">repeatable by key-value pair</span></p>
+            <p>If the dict object is a valid JSON string, it is parsed, then each argument is separated into pairs of the form key, value, and each of these pairs is assigned to dict. The dict object is then JSON-stringified and returned.</p>
+            <p class="note"><span class="noteTitle">Note:</span> Objects in Javascript cannot have more than one value associated with a key, so if e.g. the object $foo already has a value associated with the key "baz", calling <code>(setkeyvalues: $foo, "baz", 2)</code> will overwrite the prior value.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(setkeyvalues: &lt;tw-argument&gt;{ a: 1, b: 2, c: 3}&lt;/tw-argument&gt;, 'd', 4, 'e', 5, 'f', 6)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> '{"a":1,"b":2,"c":3,"d":4,"e":5,"f":6}'</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The arguments are added to the dict object ({ a: 1, b: 2, c: 3}) in key-value pairs, as d: 4, e: 5, f: 6. Then the object is stringified and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(setkeyvalues: '{"a":1,"b":2,"c":3}', 'd', 4, 'e', 5, 'f', 6)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Same as above.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(setkeyvalues: $foo, 'd', 4, 'e', 5, 'f', 6)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Assuming the $foo variable is identical to the object literal/stringified object above, the output is the same as above.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The $foo variable is retrieved from the current passage's variable state, and, if this variable is a the relevant arguments are added to the object. The $foo Twinescript variable is updated with the modified object, and likewise any direct bindings associated with $foo are updated.</span></p>
+
+            <h4>in</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">Javascript object</span> <span class="or">or</span> <span class="dataType">JSON stringified object</span> toSearch</span>, <span class="macroArgument"><span class="dataType">string</span> key</span></p>
+            <p>A simple wrapper for the Javascript <code>in</code> symbol. If the key argument exists in the toSearch object, true is returned; otherwise, false is returned.</p>
+            <p class="note"><span class="noteTitle">Note:</span> Javascript does not allow <code>in</code> to be performed on non-object types, so if toSearch is neither an object nor a JSON-stringified object, an error will be shown and false will be returned. Alternately, the key argument can be any type, but will be automatically changed to a string by Javascript, such that <code>2</code> will become the key "2", <code>[]</code> will become "" (a blank string), and <code>{}</code> will become "[object Object]". The complexity of Javascript type coercion makes it in nearly every case a better idea to just use string key values rather than relying on Javascript to coerce them to strings in a sensible manner.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(in: &lt;tw-argument&gt;{ a: 1, b: 2, c: 3}&lt;/tw-argument&gt;, "a")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> true</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The key <code>"a"</code> exists in the toSearch object, so <code>true</code> is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(in: '{"a":1,"b":2,"c":3}', "d")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> false</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The key <code>"d"</code> is not in the JSON-parsed toSearch object, so <code>false</code> is returned.</span></p>
+
+            <h4>stringcontains, string-contains, strcontains, str-contains</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span><span class="macroArgument"><span class="dataType">string</span> str</span>, <span class="macroArgument"><span class="dataType">string</span> substr</span></p>
+            <p>The stringcontains method tests whether a given string contains within it a given substring. For example, "bar" is a substring of "foobar". This method does not do any JSON-parsing or evalling.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The manner in which <code>stringcontains</code> handles edge cases is somewhat different from Javascript's <code>indexOf</code> function, which it uses in some capacity within its behind-the-scenes implementation. In this case, passing a non-string value (numbers, booleans, objects, functions) as either the <code>str</code> or <code>substr</code> arguments will show an error message and return false. Passing an empty string as either the <code>str</code> or <code>substr</code> arguments will return false and show a message in the developer console. Failing to pass either or both arguments to the macro will show an error message and return false. In all other cases, Javascript's indexOf function is used to determine true or false.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(stringcontains: "abcde", "a")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> true</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The value <code>"a"</code> is a substring of the <code>str</code> variable, so <code>true</code> is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(stringcontains: "abcde", "f")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> false</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The value <code>"f"</code> is not a substring of the <code>str</code> variable, so <code>false</code> is returned.</span></p>
+
+            <h4>objectcontains, object-contains, objcontains, obj-contains</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature: </span><span class="macroArgument"><span class="dataType">Javascript object</span> <span class="or">or</span> <span class="dataType">JSON stringified object</span> toSearch</span>, <span class="macroArgument"><span class="dataType">any</span> value</span></p>
+            <p>The <code>objectcontains</code> macro is like the <code>in</code> macro, but instead is used to determine if a given value, rather than a given key, exists in the object passed to the macro. This macro can be used on any kind of (non-null) object, including arrays.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The way that Gately processes and passes object variables (replacing the $variable text with a stringified representation of the object) makes it so that references, and reference equality, are lost. Ergo, it's not possible to establish in the traditional sense whether two object stored in separate variables reference the same variables. Because of that, equality is established by stringifying both the values inside the toSearch string or object and the value argument (or, if the value argument is a non-JSON string, leaving it alone) and comparing them as strings. For example, in Javascript, {} === {} is <code>false</code>, because each is a separately constructed object, but in this macro, they would be changed to strings as "{}" === "{}", which evaluates to true. Please let me know if this causes any particular problems, and workarounds can be considered.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(objectcontains: &lt;tw-argument&gt;[1, 2, 3]&lt;/tw-argument&gt;, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> true</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The value <code>2</code> is contained in the array passed as the <code>toSearch</code> object, so <code>true</code> is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(objectcontains: '{ "a": 1, "b": 2, "c": 3 }', 4)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> false</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The value <code>4</code> is not a key of the JSON-parsed <code>toSearch</code> object, so <code>false</code> is returned.</span></p>
+
+            <h4>arrayconcat, array-concat, arrconcat, arr-concat</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span><span class="macroArgument"><span class="dataType">Javascript array</span> <span class="or">or</span> <span class="dataType">JSON stringified array</span></span>, <span class="argumentModifier">repeatable</span></p>
+            <p>The arrayconcat method concatenates the contents of multiple arrays into a single array, in the order in which they are provided. Any argument that is:
+                <ol>
+                    <li>Not coerceable to boolean <code>true</code> in Javascript (<code>null</code>, <code>undefined</code>, <code>0</code>, <code>""</code> [an empty string])</li>
+                    <li>Not of the Javascript type <code>Object</code></li>
+                    <li>Lacking a <code>concat</code> function</li>
+                </ol>
+            will not be included in any fashion in the returned array, and an error message will be displayed. Each of the contents of the valid arguments are added to the array to be returned. The array is JSON-stringified and returned.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(arrayconcat: &lt;tw-argument&gt;[1, 2, 3]&lt;/tw-argument&gt;, &lt;tw-argument&gt;[4, 5, 6]&lt;/tw-argument&gt;, &lt;tw-argument&gt;[7, 8, 9]&lt;/tw-argument&gt;)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "[1,2,3,4,5,6,7,8,9]"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> The contents of each of the valid arguments are added to the return array in the order they were provided, then stringified, then returned. The result is an array containing all nine of the indices in the three arrays provided as arguments.</span></p>
+
+            <h4>foreach, for-each</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">Javascript array</span> <span class="or">or</span> <span class="dataType">JSON stringified array</span> <span class="or">or</span> <span class="macroArgument"><span class="dataType">comma-delimited string</span> <span class="or">or</span> <span class="dataType">World Model collection</span> collection</span>, <span class="macroArgument"><span class="dataType">string</span> variable</span>, <span class="macroArgument"><span class="dataType">Twinescript</span> callback</span><span class="macroAttribute">double tag</span><span class="macroAttribute">defer</span></p>
+            <p>The foreach macro is the maner in which iteration is performed in Gately. Those who have programming experience may recognize it; a similar structure appears in many programming languages as <code>for</code> or <code>foreach</code>. Essentially, this allows you to perform the same action on every element in a collection – in this case, an array – without having to write that out for every single result you want. The <code>variable</code> argument is passed as a string, and is replaced in the callback Twinescript function with the value of the current state of the iterator. In the example below, the collection is an array containing eight cardinal directions. In this case, the variable name is "$dir", and in the callback function, each incidence of the string <code>$dir</code> is replaced for each execution with <code>north</code>, <code>northeast</code>, <code>east</code>, etc., all the way through the collection.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode"><br>
+            (set: $directions to (array: "north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"))<br>
+            (foreach: $directions, "$dir") [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Travel [[$dir]]&lt;br&gt;<br>
+            ]</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> <br>Travel &lt;tw-link class="passage" name="north"&gt;north&lt;/tw-link&gt;&lt;br&gt;<br>Travel &lt;tw-link class="passage" name="northeast"&gt;northeast&lt;/tw-link&gt;&lt;br&gt;<br>Travel &lt;tw-link class="passage" name="east"&gt;east&lt;/tw-link&gt;&lt;br&gt;<br>Travel &lt;tw-link class="passage" name="southeast"&gt;southeast&lt;/tw-link&gt;&lt;br&gt;<br>Travel &lt;tw-link class="passage" name="south"&gt;south&lt;/tw-link&gt;&lt;br&gt;<br>Travel &lt;tw-link class="passage" name="southwest"&gt;southwest&lt;/tw-link&gt;&lt;br&gt;<br>Travel &lt;tw-link class="passage" name="west"&gt;west&lt;/tw-link&gt;&lt;br&gt;<br>Travel &lt;tw-link class="passage" name="northwest"&gt;northwest&lt;/tw-link&gt;&lt;br&gt;<br></span><span class="macroResult"><span class="macroResultTitle">Result:</span> Each of the strings contained in the <code>$directions</code> array is inserted into a passage link, and eight links, one pointing to each direction, is created. These are preceded by the word "Travel" and proceeded by a <code>&lt;br&gt;</code> element, creating a new line.</span></p>
+
+            <h4>range</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">number</span> <span class="or">or</span> <span class="dataType">single-character string</span> lower</span>, <span class="macroArgument"><span class="dataType">number</span> <span class="or">or</span> <span class="dataType">single-character string</span> upper</span>, <span class="macroArgument"><span class="dataType">number</span> step</span> <span class="argumentModifier">optional</span></p>
+            <p>The range macro produces an array of all values between the <code>lower</code> argument and the <code>upper</code> argument, with the <code>upper</code> argument excluded. Depending on the arguments provided to the macro, either a range of numbers or a range of Unicode characters can be created. If both the <code>upper</code> and <code>lower</code> arguments are numbers, a range of numbers is created; if both are strings, a range of characters is created; and if the types of those two arguments do not match one another, an error is displayed and nothing is returned. The third, optional argument is <code>step</code>, which allows you to determine the distance between each item in the array. This defaults to 1, meaning for <code>(range: 1, 5)</code> it will return e.g. <code>[1, 2, 3, 4]</code>. <code>(range: 1, 5, 0.5)</code>, for example, would result in the array <code>[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]</code>. Note that the step argument is completely unnecessary when providing character arguments for lower and upper. The only possible distance between codepoints is 1, and a different value provided as the <code>step</code> argument will result in an error and nothing returned. If an error is not encountered, the array is JSON-stringified before being returned.</p>
+            <p class="note"><span class="noteTitle">Note:</span> Like other, similar implementations in Python and other languages, Gately's range macro, <b>when provided number arguments</b>, returns an array including the value of the <code>lower</code> argument, but excluding the value of the <code>upper</code> argument. In practice, this means that if you want e.g. an array containing the integers 1-12, you would want to use the macro as <code>(range: 1, 13)</code>. This behavior is not applicable to ranges of characters.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The manner in which creating a range of characters works is dependent on the Unicode codepoints of the characters provided. Javascript's <code>codePointAt</code> function is used to derive the codepoint of the <code>upper</code> and <code>lower</code> character arguments, and each codepoint between these characters including the lower <b>and upper</b> arguments, is returned in the array.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(range: 0, 14, 2)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "[0,2,4,6,8,10,12]"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Each value, from the lower argument up to but not including the upper argument, each separated by 2, is added to an array. This array is JSON-stringified and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(range: "A", "Z")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Each codepoint between the characters <code>"A"</code> and <code>"Z"</code>, including both <code>"A"</code> and <code>"Z"</code>, is added to an array. This array is JSON-stringified and returned.</span></p>
+
+            <h4>either</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">array-like object</span> <span class="or">or</span> <span class="dataType">JSON-stringified array-like object</span> arraylike</span> <span class="argumentModifier">repeatable</span></p>
+            <p>The either macro allows a random choice from either a list of two or more arguments, or from a single argument comprised of an array-like object or a JSON-stringified form of the same. If there is only a single argument, the value at a random index from the array-like object will be returned. Otherwise, one of the provided arguments is picked at random and returned. If the item to be returned is an object, it is JSON-stringified; if not, it is returned as-is.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(either: &lt;tw-argument&gt;[1, 2, 3, 4]&lt;/tw-argument&gt;)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either 1, 2, 3, or 4.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random index is generated between 0 and 3, reflecting the indices in the provided array. The value at this index is returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(either: "a", "b", "c")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either "a", "b", or "c".</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random index is generated between 0 and 2, reflecting the indices of the Javascript <code>arguments</code> array. This array contains all the arguments passed to the function. The value at this index is then returned.</span></p>
+
+            <h4>random, rand</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">number</span> floor</span>, <span class="macroArgument"><span class="dataType">number</span> ceiling</span>, <span class="macroArgument"><span class="dataType">string</span> <span class="or">or</span> <span class="dataType">boolean</span> float</span> <span class="argumentModifier">optional</span>, <span class="macroArgument"><span class="dataType">string</span> <span class="or">or</span> <span class="dataType">boolean</span> exclusive </span>  <span class="argumentModifier">optional</span></p>
+            <p>The random macro allows for the creation of a random integer or floating point number between the provided <code>floor</code> and <code>ceiling</code> numerical arguments. The <code>float</code> and <code>exclusive</code> arguments are optional. By default, the random macro will produce an rounded integer within the inclusive bounds of the floor and ceiling. If the float argument is <code>true</code> or a case-blind form of the word <code>"float"</code>, the number will not be rounded and will be returned as a floating point. The exclusive argument can be set to <code>true</code> or a case-blind form of <code>"exclusive"</code>, which will result in the returned value being between the exclusive bounds of floor and ceiling. The exclusive value can also be case-blind forms of <code>"floor"</code> or <code>"ceiling"</code>, which will result in the returned value being exclusive of the floor or ceiling value, respectively, and inclusive of the other value. A floor argument equal or greater than the ceiling argument will result in an error. If an integer is to be returned, a floor argument which is greater than or equal to the ceiling argument minus 1 will also result in an error.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(random: 2, 5)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either 2, 3, 4, or 5.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 2 and 5 and rounded to the nearest integer, then returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(random: 2, 5, "float")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Any floating-point number between 2 and 5.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 2 and 5, then returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(random: 2, 5, null, "ceiling")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either 2, 3, or 4.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random integer is generated between 2 and 4, rounded to the nearest integer, then returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(random: 2, 5, null, "exclusive")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either 3 or 4.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random integer is generated between 3 and 4, rounded to the nearest integer, then returned.</span></p>
+
+            <h4>randominteger, random-integer, randomint, random-int, randint, rand-int</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">number</span> floor</span>, <span class="macroArgument"><span class="dataType">number</span> ceiling</span>, <span class="macroArgument"><span class="dataType">string</span> <span class="or">or</span> <span class="dataType">boolean</span> exclusive </span>  <span class="argumentModifier">optional</span></p>
+            <p>The randominteger macro allows for the creation of a random integer between the provided <code>floor</code> and <code>ceiling</code> numerical arguments. The <code>exclusive</code> argument is optional. By default, the random macro will produce an rounded integer within the inclusive bounds of the floor and ceiling. The exclusive argument can be set to <code>true</code> or a case-blind form of <code>"exclusive"</code>, which will result in the returned value being between the exclusive bounds of floor and ceiling. The exclusive value can also be case-blind forms of <code>"floor"</code> or <code>"ceiling"</code>, which will result in the returned value being exclusive of the floor or ceiling value, respectively, and inclusive of the other value. A floor argument which is greater than or equal to the ceiling argument minus 1 will result in an error. The randominteger macro is identical to the random macro except it omits the float argument and only returns integers.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(randominteger: 2, 5)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either 2, 3, 4, or 5.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 2 and 5 and rounded to the nearest integer, then returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(randominteger: 2, 5, "ceiling")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either 2, 3, or 4.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 2 and 4, rounded to the nearest integer, then returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(randominteger: 2, 5, "exclusive")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Either 3 or 4.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 3 and 4, rounded to the nearest integer, then returned.</span></p>
+
+            <h4>randomfloat, random-float, randfloat, rand-float</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">number</span> floor</span>, <span class="macroArgument"><span class="dataType">number</span> ceiling</span>, <span class="macroArgument"><span class="dataType">string</span> <span class="or">or</span> <span class="dataType">boolean</span> exclusive </span>  <span class="argumentModifier">optional</span></p>
+            <p>The randomfloat macro allows for the creation of a random floating point number between the provided <code>floor</code> and <code>ceiling</code> numerical arguments. The <code>exclusive</code> argument is optional. By default, the random macro will produce an rounded integer within the inclusive bounds of the floor and ceiling. The exclusive argument can be set to <code>true</code> or a case-blind form of <code>"exclusive"</code>, which will result in the returned value being between the exclusive bounds of floor and ceiling. The exclusive value can also be case-blind forms of <code>"floor"</code> or <code>"ceiling"</code>, which will result in the returned value being exclusive of the floor or ceiling value, respectively, and inclusive of the other value. A floor argument greater than or equal to the ceiling argument will result in an error. The randomfloat macro is identical to the random macro except it omits the float argument and only returns floating point numbers.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(randomfloat: 2, 5)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Any floating-point number between 2 and 5.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 2 and 5, then returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(randomfloat: 2, 5, "floor")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Any floating-point number between 2 and 5, exclusive of 2.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 2 and 5, exclusive of 2, then returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(randomfloat: 2, 5, "exclusive")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> Any floating-point number between 2 and 5, exclusive of 2 and 5.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A random number is generated between 2 and 5, exclusive of 2 and 5, then returned.</span></p>
+
+            <h4>rolldice, roll-dice, diceroll, dice-roll</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> <span class="or">or</span> <span class="dataType">array-like object</span> dice</span>, <span class="macroArgument"><span class="dataType">string</span> returnType</span> <span class="argumentModifier">optional</span>, <span class="macroArgument"><span class="dataType">string</span> discard</span> <span class="argumentModifier">optional</span></p>
+            <p>The rolldice macro allows one to simulate rolls of any combination of dice of any combination of sides. Ordinarily, one would have to do this with a series of individual calls to Javascript's <code>Math.random</code> library or the <code>random</code> macros, but with this macro you can accomplish the whole of your die/dice simulation with a single, short macro. The only required argument is <code>dice</code>, which is either an array or space-delimited string, with each element therein representing a single rollset of the pattern XdY, where X is the number of times to roll that particular die, and Y is the number of faces of the die. For example, the inputs <code>"1d6 2d4"</code> and <code>["1d6", "2d4"]</code> are used identically. In either case, a six-sided die is rolled, and two four-sided dice are rolled. By default, without the <code>returnType</code> argument provided, the sum of every roll is returned. This can be altered by providing a returnType value of <code>"list"</code>, which will return a JSON-stringified list of the value of each individual roll, sorted from lowest to highest without respect for the die it was rolled on. <code>"sum"</code> is a valid returnType argument, but will have the same effect as not providing one or providing a false-y value (null, undefined, empty string, 0). The last of three arguments is the <code>discard</code> macro, which instructs the macro to discard a certain number or percent of the rolls from the lowest results (using the value <code>"lowest"</code>), the highest results (using the value <code>"highest"</code>), or from both (using the value – you guessed it – <code>"both"</code>).</p>
+            <p class="note"><span class="noteTitle">Note:</span> It is not possible to discard a different number of rolls from the lowest and highest results; if this is a functionality you need, you should discard nothing and have the macro return a list, then use the <code>removeathead</code> and <code>removeatend</code> macros to remove the desired quantities from both ends.</p>
+            <p class="note"><span class="noteTitle">Note:</span> For obvious reasons, it is not possible to specify non-integer values for the number of times any given die is rolled or its number of faces. If you need a random, floating-point result, use one of the <code>random</code> macros, or process a sum or list created through dice rolls to create one or more floating point values.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(rolldice: "1d4 2d6")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> A number between 3 and 16.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> One four-sided die is rolled, resulting in an integer between 1 and 4. Two six-sided die are rolled, resulting in two integers between 1 and 6. The sum of these three rolls is calculated and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(rolldice: &lt;tw-argument&gt;["1d4", "2d6"]&lt;/tw-argument&gt;, "list")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> A sorted, stringified array with one integer between 1 and 4, and two integers between 1 and 6.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> An array is produced, containing an integer between 1 and 4 and two integers between 1 and 6. This array is sorted, then JSON-stringified and returned.</span></p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">(rolldice: "2d6, 2d4", "list", "both 1")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> A sorted, stringified array containing the middle two rolls is created.</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Each die is rolled, then the array of rolls is sorted. The lowest and highest rolls are discarded, then the array is stringified and returned.</span></p>
+
+            <h4>function, widget, lambda</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> name</span>, <span class="macroArgument"><span class="dataType">Twinescript</span> <span class="or">or</span> <span class="dataType">string</span> callbackOrOverride</span>, <span class="macroArgument"><span class="dataType">Twinescript</span> callback</span> <span class="argumentModifier">optional</span><span class="macroAttribute">double tag</span><span class="macroAttribute">defer</span></p>
+            <p>The function/widget/lambda macro allows an author to wrap any amount of Twinescript macro calls and text into an object that can be called in an identical fashion to a macro. Essentially, this allows one to create the reusable and much briefer syntax of a macro however desired, without having to use the <code>Macro.add</code> interface in Javascript to add a new, "real," macro. The only significant downside to this is that each argument in the pseudo-method-signature defined within the callback function must be referred to using the <code>$args</code> variable and the index in which they are provided to the function when called. These indices are zero-indexed, so the first argument would be <code>$args[0]</code>, the second would be <code>$args[1]</code>, etc. The optional <code>override</code> argument is used, with a value of <code>true</code> or <code>"override"</code>, to allow overwriting an already-defined function/widget name with a new one. If the override argument is not provided with either of the aforementioned values, and there is already a function defined with the same name, an error message will be displayed and nothing will be created.</p>
+            <p class="note"><span class="noteTitle">Note:</span> After the arguments provided to this macro are passed to the <code>State.addFunction</code> Javascript function, several checks are performed to see if the provided function/widget name already exists within the relevant Macro or State object as a macro, macro alias, or function. (This is the precedence order – macro -> macro alias -> function/widget – for all operations involving macros or macro-type objects, when checking for name collisions while defining new functions, or determining what exactly is used to execute any written macro while parsing. The first of these two, having a higher precedence, are <b>unoverrideable</b> with regards to making new functions/widgets. It is impossible to create a function/widget with the same name as anything with a higher precedence, and will result in an error message being displayed and no execution performed, but functions/widgets can be overwritten if the <code>override</code> argument is included with a valid value. Do <b>not</b>, however, be confused by the <code>optional</code> modifier in the method signature – the callback is an integral portion of this method, and cannot be omitted regardless of whether an override is specified.</p>
+            <p class="note"><span class="noteTitle">Note:</span> You may have noted that the method signature notes <code>callback</code> twice – once as <code>callbackOrOverride</code>, and once as <code>callback</code>. The specific reason for this is that the contents of a Harlowe-style hook, or the contents between the opening and closing tags of a Sugarcube-style macro, depending on the dialect used, must always follow all arguments in the original macro tag. Therefore, they will always be passed to the macro Javascript function as the final argument. Given that <code>override</code> is an optional behavior of the macro, the callback will either exist as the second argument should the override argument be omitted, or the third if it is not. This is marginally unpleasant, and certainly unaesthetic, but it is trivially simple in a macro to check the number of arguments provided in any given call and thereby know which argument is which.</p>
+            <p class="note"><span class="noteTitle">Note:</span> The replacement of all <code>$args</code> arguments is performed through a very naïve regular expression, so <b>every</b> incidence of $args[x] where x is an index that exists in the Javascript arguments array will be replaced. This includes an incidence of this pattern within strings, so if you need, for example, to use <code>$args[1]</code> within a string, and print is as such, either use a macro like <code>strconcat</code> or the <code>+</code> operator to form that string by portions without actually writing it literally, or assign it to a variable and use the variable within the function/widget, or pass the variable as an argument.</p>
+            <p class="note"><span class="noteTitle">Note:</span> Using an <code>$args</code> argument within a function/wiedget without providing at that index in the Javascript arguments array will result in undefined behavior. In practice, this means that the specific args call will end up as something ugly and stupid like <code>03</code> or <code>04</code>.</p>
+            <p class="note"><span class="noteTitle">Note:</span> Like macros, functions/widgets exist independent of story state. Obviously, they will not exist until the passage in which they are defined is visited by the player, but after that passage is visited, the function/widget will persist regardless of whether the player rewinds back beyond the passage at which it was defined.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode"><br>(function: "foo")[<br>&nbsp;&nbsp;&nbsp;&nbsp;(strconcat: $args[0], $args[1])<br>]<br>(foo: "bar", "baz")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> "barbaz"</span><span class="macroResult"><span class="macroResultTitle">Result:</span> Assuming there are no macros or macro aliases already defined which are named <code>foo</code>, the function/widget is created and stored within the <code>State.functionStore</code> object. This is then called through the macro syntax of whichever dialect you choose to use. The arguments <code>"bar"</code> and <code>"baz"</code> are provided to the callback function, replacing in this incidence <code>$args[0]</code> and <code>$args[1]</code>, respectively. These two strings are concatenated by the <code>strconcat</code> macro, and returned as <code>"barbaz"</code>.</span></p>
+
+            <h4>bind</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> name</span>, <span class="macroArgument"><span class="dataType">Twinescript</span> callback</span><span class="macroAttribute">double tag</span><span class="macroAttribute">defer</span></p>
+            <p>The bind macro is the primary method through which updating on-page content is accomplished after the passage is fully loaded. In other formats, typically either a <code>replace</code> call is performed, either using a plain string argument or a CSS selector, or a Javascript interval is created with a macro like <code>live</code>, firing every so many milliseconds and updating the content with the current value of its related variable. Both of these approaches have numerous inadequacies and pitfalls, but the bind macro does not. Essentially, the bind macro is a way of accomplishing <b>data binding</b> – connecting a variable in Twinescript code to a section of Twinescript logic and text, and automagically updating whenever that variable is changed. This pattern is fairly common in MVC and MVVM-style frameworks, both for desktop and web design. A non-variable name can be used as the name of a binding, but this will force one to use <code>updatebinding</code> or <code>updatebindings</code> to update content, and updates will not fire automatically on variable updates.</p>
+            <p class="note"><span class="noteTitle">Note:</span> There are two types of bindings you can create with the <code>bind</code> macro: direct and indirect bindings. Every direct binding will be refreshed on-screen automatically when the variable which shares its name is set to a new value. Indirect bindings, which have a name that does not match a defined Twinescript variable, must be updated with <code>updatebinding</code> or <code>updatebindings</code>.</p>
+            <p class="note"><span class="noteTitle">Note:</span> All Twinescript code within the binding closure is executed every time the variable is updated, even if the code is unrelated to the variable, so it's important to only include code in bindings that can and should execute in such a fashion.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode"><br>(set: $foo to "bar")<br>(bind: "$foo")[$foo](set: $foo to "baz")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> $foo will first be printed within the bind macro as <code>"bar"</code>, and will update to <code>"baz"</code> as soon as $foo is set a second time. (This will not be seen, given that all the above macros will be executed when the page is loaded. But trust me – it does change.)</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A binding closure is created, tied to the variable $foo. When $foo is set to a new value, the State object automatically updates the binding, changing the displayed text to <code>"baz"</code>. The displayed text will automatically change to the current value of $foo whenever it is updated for as long as the player remains in that passage.</span></p>
+
+            <h4>updatebinding, update-binding</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> name</span></p>
+            <p>The updatebinding macro allows one to update an indirect binding, forcing a refresh of all content within. This should never be necessary for direct bindings, which have names that are identical to a defined Twinescript variable</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode"><br>(bind: "test")[<br>&nbsp;&nbsp;&nbsp;&nbsp;(set: $foo to $foo + 1)<br>&nbsp;&nbsp;&nbsp;&nbsp;$foo<br>]<br>(updatebinding: "test")</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> 2</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A binding closure is created with the name <code>"test"</code>. In this macro, the variable <code>$foo</code>, which defaults, as do all undefined Twine variables, to <code>0</code>, is incremented by 1, giving it a value of 1. (This is initially rendered to the document, though the browser will not update to show this before the end of passage load.) Then, the <code>updatebinding</code> macro is called on the <code>"test"</code> indirect binding. 1 is added to $foo once more, giving it the value 2, which is displayed on-screen.</span></p>
+
+            <h4>updatebindings, update-bindings</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> none</p>
+            <p>The updatebindings macro is identical to the updatebinding macro, except rather than updating a specific binding, it updates all existing bindings. There is very rarely any significant performance concern about updated several bindings rather than 1, so which you use depends almost entirely on how you would prefer to structure your Twine code.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode"><br>(bind: "test")[<br>&nbsp;&nbsp;&nbsp;&nbsp;(set: $foo to $foo + 1)<br>&nbsp;&nbsp;&nbsp;&nbsp;$foo<br>]<br>(updatebindings:)</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> 2</span><span class="macroResult"><span class="macroResultTitle">Result:</span> A binding closure is created with the name <code>"test"</code>. In this macro, the variable <code>$foo</code>, which defaults, as do all undefined Twine variables, to <code>0</code>, is incremented by 1, giving it a value of 1. (This is initially rendered to the document, though the browser will not update to show this before the end of passage load.) Then, the <code>updatebindings</code> macro is called, updating all bindings. 1 is added to $foo once more, giving it the value 2, which is displayed on-screen.</span></p>
+
+            <h4>requestanimationframe, request-animation-frame, requestanimframe, request-anim-frame, raf</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">Twinescript</span> callback</span><span class="macroAttribute">double tag</span><span class="macroAttribute">defer</span></p>
+            <p>The requestanimationframe macro allows the use of Javascript's modern <code>requestAnimationFrame</code> function, will allows animation to be performed more performantly both within and outside of timed loops. If you're planning to create something intensively animated, or there will be something on-screen being re-animated constantly, you should wrap the Twine logic that causes visual changes in the requestanimationframe macro.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">to be added</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> to be added</span><span class="macroResult"><span class="macroResultTitle">Result:</span> to be added</span></p>
+
+            <h4>live, interval, setinterval, set-interval</h4>
+            <p class="methodSignature"><span class="methodSignatureTitle">Method signature:</span> <span class="macroArgument"><span class="dataType">string</span> time</span> <span class="macroArgument"><span class="dataType">Twinescript</span> callback</span><span class="macroAttribute">double tag</span><span class="macroAttribute">defer</span></p>
+            <p>The requestanimationframe macro allows the use of Javascript's modern <code>requestAnimationFrame</code> function, will allows animation to be performed more performantly both within and outside of timed loops. If you're planning to create something intensively animated, or there will be something on-screen being re-animated constantly, you should wrap the Twine logic that causes visual changes in the requestanimationframe macro.</p>
+            <p class="macroExample"><span class="usageTitle">Usage example:</span> <span class="macroExampleCode">to be added</span><span class="macroOutput"><span class="macroOutputTitle">Output:</span> to be added</span><span class="macroResult"><span class="macroResultTitle">Result:</span> to be added</span></p>
+        </div>
+        </div>
+
+        <script>
+            'use strict';
+
+            const from = Array.from;
+
+            const table = document.querySelector('#tableOfContents');
+            let selector = 'h2, h3, h4, h5, h6, #content > ul > li b';
+            const hElements = from(document.querySelectorAll(selector));
+
+            hElements.forEach(function(elem) {
+                let index = 0;
+                const origText = elem.innerText.replace(/:/g, '');
+                let text = origText.replace(/[\-!]/g, '')
+                    .toLowerCase()
+                    .split(' ')
+                    .filter(function(part) {
+                        return part.trim() !== '';
+                    })
+                    .map(function(part) {
+                        index++;
+                        if (index === 1) {
+                            return part.replace(/,/g, '');
+                        } else {
+                            return part[0].toUpperCase() +
+                                part.slice(1).replace(/,/g, '');
+                        }
+                    }).join('');
+
+                elem.id = text;
+
+                const li = document.createElement('li');
+
+                const anchor = document.createElement('a');
+                anchor.innerText = origText;
+                anchor.href = '#' + text;
+                li.appendChild(anchor);
+
+                if (elem.tagName === 'B' || elem.tagName === 'H4') {
+                    selector = '#tableOfContents > li:last-of-type';
+                    const parent = document.querySelector(selector);
+                    const ol = document.createElement('ul');
+                    ol.appendChild(li);
+                    parent.appendChild(ol);
+
+                } else {
+                    table.appendChild(li);
+                }
+            });
+
+            let dialect = 'harlowe';
+            content.addEventListener('click', function(e) {
+                const tgt = e.target;
+                if (tgt &&
+                    tgt.tagName === 'SPAN' &&
+                    tgt.classList.contains('macroExampleCode'))
+                {
+                    const height = content.scrollHeight;
+                    const elems = from(
+                        document.querySelectorAll('.macroExampleCode'));
+
+                    if (dialect === 'harlowe') {
+                        const regex = /\((.+?):(.*?)\)(\[.*\])?/;
+                        elems.forEach(function(elem) {
+                            const override =
+                                elem.getAttribute('data-override-type');
+                            if (override) {
+                                return;
+                            }
+
+                            const elemText = elem.innerText;
+                            const result = regex.exec(elemText);
+                            if (!result) {
+                                return;
+                            }
+
+                            let newStr = '<<' + result[1];
+                            if (result[2]) {
+                                newStr += ' ' + result[2];
+                            }
+                            newStr += '>>';
+
+                            if (result[3]) {
+                                newStr += result[3].slice(1, -1) +
+                                    '<</' +
+                                    result[1] +
+                                    '>>';
+                            }
+
+                            elem.innerText = newStr;
+                        });
+                        dialect = 'sugarcube';
+                    } else if (dialect === 'sugarcube') {
+                        const regex = /<<(.*?)( .*?)?>>(?:(.*?)<<\/\1>>)?/;
+                        elems.forEach(function(elem) {
+                            const override =
+                                elem.getAttribute('data-override-type');
+                            if (override) {
+                                return;
+                            }
+
+                            const elemText = elem.innerText;
+                            const result = regex.exec(elemText);
+                            if (!result) {
+                                return;
+                            }
+
+                            let newStr = '(' + result[1] + ':';
+                            if (result[2]) {
+                                newStr += ' ' + result[2];
+                            }
+                            newStr += ')';
+
+                            if (result[3]) {
+                                newStr += '[' + result[3] + ']';
+                            }
+
+                            elem.innerText = newStr;
+                        });
+                        dialect = 'harlowe';
+                    }
+
+                    /* if (content.offsetHeight > height) {
+                        content.scrollTop -= content.scrollHeight - height;
+                    } else {
+                        content.scrollTop -= height - content.scrollHeight;
+                    } */
+                }
+            });
+        </script>
+    </body>
+</html>

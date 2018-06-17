@@ -1,0 +1,48 @@
+body {
+	margin: 5%;
+	font-family: "Helvetica Neue";
+	font-size: 1rem;
+}
+#macroList {
+	list-style-type: none;
+}
+#macroList {
+
+}
+#macroList > li {
+	padding-bottom: 25px;
+}
+.codeDisplay {
+	padding: 20px;
+	border: 1px solid black;
+	background-color: #e8e8e8;
+	display: inline-block;
+	max-width: 70%;
+	word-wrap: break-word;
+}
+p > .codeDisplay {
+}
+.listItemTitle {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+.collapser {
+	margin-top: 10px;
+	padding-left: 20px;
+	cursor: pointer;
+}
+#tableOfContents {
+	display: inline-block;
+	background-color: #f8f8f8;
+	width: auto;
+	border: 1px solid black;
+	padding: 20px;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+#tableOfContentsList {
+	list-style-type: lower-roman;
+}
+#tableOfContentsList a:visited {
+	color: blue;
+}

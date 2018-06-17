@@ -1,0 +1,272 @@
+ <!DOCTYPE html>
+ <html>
+    <head>
+        <style>
+        .Chat-message {
+            text-shadow: 0 0 1px black;
+        }
+
+        .Chat-choice {
+            display: block;
+            padding: 2px;
+            background: green;
+            cursor: pointer;
+        }
+        </style>
+    </head>
+    <body>
+        <script>
+        /* Constructor for Scenarios, the supervisor object for the
+         * ChatScenario library. The Scenario is responsible for adding
+         * elements to the target element, managing its task queue by
+         * executing actions and showing elements, and keeping track of
+         * where in the scenario we are. */
+        var Scenario = function(targetElement) {
+            this.targetElement = targetElement;
+
+            /* An object of constants. Naming style is 
+             * CONSTANT_STYLE_WITH_UNDERLINES. */
+            this.defaults = {
+                WAIT_AFTER_TASK: 1000,
+            };
+
+            /* A reference to the current setTimeout ID, which is used to
+             * pause the Scenario from executing, and also to determine
+             * whether it is currently in progress. */
+            this.timeoutID = null;
+
+            /* A field representing whether, when given new tasks, the Scenario
+             * will automatically play them, assuming no task is being played
+             * already. */
+            this.status = 'playing';
+
+            /* Starts the scenario's execution. */
+            this.play = function() {
+                this.status = 'playing';
+
+                if (this.taskIndex < this.tasks.length &&
+                    this.timeoutID === null)
+                {
+                    this.fulfillNextTask();
+                }
+            }
+
+            /* Pauses the scenario's execution. */
+            this.pause = function() {
+                this.status = 'paused';
+
+                if (this.timeoutID !== null) {
+                    clearTimeout(this.timeoutID);
+                }
+            }
+
+            /* An array of all the tasks (Messages and Choices) that the 
+             * Scenario is charged with executing. */
+            this.tasks = [];
+
+            /* The index in the tasks array that the Scenario is currently at.
+             * 99% sure this should always point to an unexecuted task. */
+            this.taskIndex = 0;
+
+            /* Adds a task to the queue, and stages it for execution it if the
+             *Scenario's status is 'playing' and its timeoutID is null. */
+            this.addTaskToQueue = function(task) {
+                if (!task) {
+                    console.log('Unrecognized task. Cannot add task to queue.');
+                    return;
+                } else if (!task.type ||
+                    (task.type !== 'message' && task.type !== 'choice'))
+                {
+                    console.log('Unrecognized task type. Cannot add task to queue.');
+                    return;
+                } else if (!task.element) {
+                    console.log('Task does not have element property.');
+                    return;
+                }
+
+                task.scenario = this;
+
+                this.tasks.push(task);
+
+                this.targetElement.appendChild(task.element);
+
+                if (this.status === 'playing' && this.timeoutID === null) {
+                    this.fulfillNextTask();
+                }
+            };
+
+            /* Removes a task from the queue. The index argument is optional --
+             * with it, the item at the index is removed; without it, the flast
+             * item in the list is removed. */
+            this.removeTaskFromQueue = function(index) {
+                const num = Math.floor(Number(index));
+                if (arguments.length >= 1 && Number.isNaN(num)) {
+                    console.log('The index argument is not a number.');
+                    return;
+                }
+
+                if (num) {
+                    this.tasks = this.tasks
+                        .slice(0, index)
+                        .concat(this.tasks.slice(
+                            index + 1, this.tasks.length));
+                    this.targetElement.removeChild(this.elements[index]);
+                    this.elements = this.elements
+                        .slice(0, index)
+                        .concat(this.elements.slice(index + 1,
+                            this.elements.length));
+                } else {
+                    this.tasks.pop();
+                    this.targetElement.removeChild(
+                        this.elements[this.elements.length - 1]);
+                    this.elements.pop();
+                }
+            }
+         
+            /* Executes the next task. Handled automatically by calling
+             * Scenario.play. */
+            this.fulfillNextTask = function() {
+                var self = this;
+                this.timeoutID = setTimeout(function() {  
+                    if (self.taskIndex >= self.tasks.length) {
+                        console.log('The scenario\'s taskIndex is already at the end ' +
+                            'of the queue.');
+                        return;
+                    } else if (self.status.playing) {
+                        console.log('The scenario is already playing.');
+                        return;
+                    }
+
+                    self.tasks[self.taskIndex].fulfill();
+                    self.taskIndex++;
+
+                    if (self.taskIndex < self.tasks.length) {
+                        self.fulfillNextTask();
+                    } else {
+                        self.timeoutID = null;
+                    }
+                }, this.defaults.WAIT_AFTER_TASK);
+            };
+        }
+
+        /* A task that only displays text onscreen, in its parent Scenario's
+         * targetElement. The html argument is required and determines the
+         * text shown by the element. The tagName and className arguments are
+         * optional and determine the tag name and class name of the created
+         * element. */
+        var Message = function(html, tagName, className) {
+            this.type = 'message';
+            this.html = html;
+            this.element = document.createElement(tagName || 'div');
+            this.element.innerHTML = html;
+            this.element.className = className || 'Chat-message';
+            this.element.style.display = 'none';
+
+            /* Shows the element. Should never need to be called manually. */
+            this.fulfill = function() {
+                this.element.style.display = '';
+            };
+        };
+
+        /* A task that appears as a link and generates new tasks for the
+         * Scenario to execute when clicked. The html, tagName, and className
+         * arguments are identical in usage to the Message's. The tasksToAdd
+         * argument is optional and dictates the tasks added to the Choice's
+         * parent scenario when it is clicked by the player. The tasksToAdd
+         * property can also be set with Choice.setTasksToAdd. */
+        var Choice = function(html, tasksToAdd, tagName, className) {
+            this.type = 'choice';
+            this.html = html;
+            this.element = document.createElement(tagName || 'a');
+            this.element.innerHTML = html;
+            this.element.className = className || 'Chat-choice';
+            this.element.style.display = 'none';
+
+            if (tasksToAdd && typeof(tasksToAdd) === 'object' && tasksToAdd.length) {
+                this.setTasksToAdd(tasksToAdd);
+            }
+
+            this.tasksToAdd = [];
+
+            /* Sets the tasksToAdd property. Input argument must be an
+             * array. */
+            this.setTasksToAdd = function(tasks) {
+                if (!tasks ||
+                    typeof(tasks) !== 'object' ||
+                    !('length' in tasks))
+                {
+                    console.log('The tasks argument was not an array. ' +
+                        'Cannot construct Choice object.');
+                    return;
+                }
+
+                this.tasksToAdd = tasks;
+            }
+
+            /* Shows the element and adds a click listener, which adds new
+             * tasks to the parent Scenario on click. Should never need to be
+             * called manually. */
+            this.fulfill = function() {
+                this.element.style.display = '';
+                this.element.addEventListener('click', fireChoice);
+
+                var self = this;
+                function fireChoice(e) {
+                    if (!self.scenario || typeof(self.scenario) !== 'object') {
+                        console.log('The selected Choice has not been added ' +
+                            'to a scenario and cannot fire.');
+                        return;
+                    }
+
+                    for (var xx = 0; xx < self.tasksToAdd.length; xx++) {
+                        self.scenario.addTaskToQueue(self.tasksToAdd[xx]);
+                    }
+                }
+            } 
+        };
+         
+        /* Our initialization method. Creates a scenario and a series of
+         * Messages and Choices. */
+        function runScenario() {
+            /* Create a new scenario, setting the body as the target to which
+             * elements will be added and in which they will be shown on
+             * fulfillment. */
+            var scenario = new Scenario(document.body);
+
+            /* Create a new message */
+            var messageOne = new Message('foo');
+            /* Add the message to the queue */
+            scenario.addTaskToQueue(messageOne);
+
+            var messageTwo = new Message('bar');
+            scenario.addTaskToQueue(messageTwo);
+
+            var messageThree = new Message('baz');
+            scenario.addTaskToQueue(messageThree);
+
+            /* Create a new choice */
+            var choiceOne = new Choice('bux');
+            scenario.addTaskToQueue(choiceOne);
+
+            /* Create the tasks that will be added to the scenario when
+             * choiceOne is clicked */
+            var choiceOneTasks = [
+                new Message('buzz'),
+                new Message('bazz'),
+                new Message('krumb'),
+                new Choice('choiceTwo'),
+                new Choice('choiceThree'),
+            ];
+
+            /* Add these tasks to choiceOne */
+            choiceOne.setTasksToAdd(choiceOneTasks);
+
+            /* Start the scenario */
+            scenario.play();
+        }
+
+        /* Run the initialization method */
+        runScenario();
+        </script>
+    </body>
+</html>

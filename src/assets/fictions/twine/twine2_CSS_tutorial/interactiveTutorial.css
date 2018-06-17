@@ -1,0 +1,131 @@
+html, body {
+	width: 99%;
+	height: 95%;
+}
+#interactiveTutorialIFrame {
+	position: absolute;
+	left: 22px;
+	width: 57%;
+	height: 75%;
+}
+#sidebarContainerDiv {
+	position: absolute;
+	right: 0;
+	width: 35%;
+	padding-right: 2%;
+	pointer-events: visible;
+}
+#sidebarPrebuiltDiv {
+	position: relative; 
+	width: 100%; 
+	display: block;
+	padding: 4px;
+}
+.selectorDiv {
+	position: relative;
+	display: block;
+	margin-bottom: 10px;
+	overflow: auto;
+}
+.selectorDivCheck {
+	float: left;
+	margin-right: 5px;
+}
+.selectorDivTriangle {
+	margin-left: 5px;
+	cursor: pointer;
+}
+.selectorDivStyleEntry{
+	position: relative;
+	left: 5%;
+	width: 80%;
+	height: auto;
+	border: 2px inset;
+	display: none;
+}
+.selectorDivStyleInputDiv {
+	bottom: 5px;
+}
+.selectorDivStyleInput {
+	position: relative;
+	left: 5%;
+	width: 43%;
+	bottom: 5px;
+}
+.selectorDivStyleAddButton {
+	position: relative;
+	width: 20%;
+	bottom: 5px;
+	margin-left: 5%;
+}
+.selectorDivStyleClearButton {
+	position: relative;
+	right: 5%;
+	width: 20%;
+	bottom: 5px;
+	margin-left: 5%;
+}
+.ruleRemove {
+	margin-left: 4px;
+	top: -1px;
+}
+#selectorAdderDiv {
+	padding: 4px;
+}
+#elementEntryDiv {
+	left: 10%;
+	top: 88.5%;
+	width: 40%;
+	padding-bottom: 25px;
+	position: relative;
+	pointer-events: visible;
+}
+#elementEntryInput {
+	width: 60%;
+}
+#elementEntryButton {
+	width: 15%;
+}
+#elementClearButton {
+	width: 15%;
+}
+@media screen and (min-width: 1250px) {
+	.responsiveText {
+		font-size: 1.35em;
+	}
+}
+@media screen and (max-width: 1250px) {
+	.responsiveText {
+		font-size: 1.25em;
+	}
+}
+@media screen and (max-width: 1150px) {
+	.responsiveText {
+		font-size: 1.15em;
+	}
+}
+@media screen and (max-width: 1050px) {
+	.responsiveText {
+		font-size: 1.05em;
+	}
+}
+@media screen and (max-width: 850px) {
+	.responsiveText {
+			font-size: 0.9em;
+	}
+}
+@media screen and (max-width: 850px) {
+	.responsiveText {
+		font-size: 0.9em;
+	}
+}
+@media screen and (max-width: 750px) {
+	.responsiveText {
+		font-size: 0.8em;
+	}
+}
+@media screen and (max-width: 700px) {
+	.responsiveText {
+		font-size: 0.7em;
+	}
+}
