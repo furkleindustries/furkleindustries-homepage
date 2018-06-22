@@ -1,0 +1,13 @@
+- name: Add Letsencrypt PPA
+  command: bash -c 'add-apt-repository ppa:certbot/certbot'
+
+- name: Update apt
+  command: bash -c 'apt-get update'
+
+- name: Install Letsencrypt
+  apt:
+    name: python-certbot-apache
+    state: present
+
+- name: Create certificates
+  command: bash -c 'certbot certonly --standalone -d furkleindustries.com -d www.furkleindustries.com --email furkle@furkleindustries.com --agree-tos --non-interactive'

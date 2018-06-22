@@ -1,4 +1,5 @@
 ---
 - include: 00_provision.yml
-- include: 10_repo.yml
-- include: 20_docker.yml
+- include: 10_letsencrypt.yml
+- include: 20_repo.yml
+- include: 30_docker.yml
