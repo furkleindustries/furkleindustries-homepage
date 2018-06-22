@@ -11,4 +11,4 @@ WORKDIR /etc/furkleindustries-homepage/
 RUN \
   npm install
 
-CMD [ "npm", "run", "start-prod" ]
+CMD [ "npm", "run", "start-prod-h2" ]
