@@ -16,4 +16,4 @@
     volumes:
       - /etc/letsencrypt/keys/live/furkleindustries.com/:/etc/furkleindustries-homepage/secrets/
     published_ports:
-      - 443:3000
+      - 443:4200
