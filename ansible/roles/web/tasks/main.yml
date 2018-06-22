@@ -1,0 +1,4 @@
+---
+- include: 00_provision.yml
+- include: 10_repo.yml
+- include: 20_docker.yml

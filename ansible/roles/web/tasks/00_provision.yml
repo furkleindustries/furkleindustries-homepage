@@ -1,0 +1,33 @@
+---
+# This playbook installs the necessary packages on the server.
+
+- name: Upgrade apt packages
+  apt:
+    upgrade: yes
+    update_cache: true
+
+- name: Install git
+  apt:
+    name: git
+    state: present
+
+- name: Install pip
+  apt:
+    name: python3-pip
+    state: present
+
+- name: Install docker-py pip package
+  pip:
+    name: docker-py
+
+- name: Install Letsencrypt
+  git: repo=https://github.com/letsencrypt/letsencrypt dest=/opt/letsencrypt/
+
+- name: Install Docker pt. 1
+  command: bash -c 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+
+- name: Install Docker pt. 2
+  command: bash -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
+  
+- name: Install Docker pt. 3
+  command: bash -c 'apt-get update && apt-cache policy docker-ce && apt-get install -y docker-ce'

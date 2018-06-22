@@ -1,0 +1,12 @@
+coverage/
+dist/
+node_modules/
+.awcache
+.git/
+.vagrant
+.vscode
+
+.DS_Store
+
+*.log
+*.swp.*

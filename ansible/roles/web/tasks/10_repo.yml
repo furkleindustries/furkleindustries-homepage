@@ -1,0 +1,5 @@
+---
+# This playbook clones the git repository to the server.
+
+- name: Clone furkleindustries-homepage repository
+  git: repo='https://github.com/furkleindustries/furkleindustries-homepage.git' dest='/etc/furkleindustries-homepage'
