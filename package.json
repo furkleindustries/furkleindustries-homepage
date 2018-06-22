@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-prod": "ng serve furkleindustries-homepage --port 443 --ssl 1 --ssl-key 'secrets/privkey.pem' --ssl-cert 'secrets/fullchain.pem'",
+    "start-prod": "ng serve furkleindustries-homepage --ssl 1 --ssl-key 'secrets/privkey.pem' --ssl-cert 'secrets/fullchain.pem'",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

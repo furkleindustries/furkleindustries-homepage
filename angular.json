@@ -58,7 +58,7 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "furkleindustries-homepage:build:production",
+              "browserTarget": "furkleindustries-homepage:build:production"
             }
           }
         },
