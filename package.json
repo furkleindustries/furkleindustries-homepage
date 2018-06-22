@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-prod": "ng serve furkleindustries-homepage",
+    "start-prod": "npm run build && node server/index.js",
+    "start-prod-h2": "cross-env h2='h2' npm run start-prod",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -23,8 +24,13 @@
     "@angular/platform-browser-dynamic": "^6.0.5",
     "@angular/router": "^6.0.5",
     "core-js": "^2.5.4",
+    "express": "^4.16.3",
+    "express-sslify": "^1.2.0",
+    "express-static-gzip": "^0.3.2",
     "rxjs": "^6.2.1",
     "sass": "^1.6.1",
+    "serve-favicon": "^2.5.0",
+    "spdy": "^3.4.7",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
