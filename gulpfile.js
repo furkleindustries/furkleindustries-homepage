@@ -7,7 +7,6 @@ const {
   readFile,
   writeFile,
 } = require('fs');
-const gulp = require('gulp');
 const {
   resolve,
 } = require('path');
