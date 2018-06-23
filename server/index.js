@@ -51,7 +51,7 @@ app.use((req, res, next) => {
                 'max-age=31536000 ; includeSubDomains');
 
   /* Deny all iframes/iframing outside the site. */
-  res.setHeader('X-Frame-Options', 'same-origin');
+  res.setHeader('X-Frame-Options', 'sameorigin');
 
   /* Block all detected XSS attacks entirely. */
   res.setHeader('X-XSS-Protection', '1; mode=block');
