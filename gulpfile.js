@@ -90,11 +90,11 @@ const dockerRun = async () => {
                         /* Expose port 3001 on the container as port 80 on the
                          * host machine. */
                         (h2 ? '-p 80:3001 ' +
-                        /* Expose port 3000 on the container as port 443 on the
-                         * host machine. */
-                        '-p 443:3000 ' :
-                        /* Only use HTTP. */
-                        '-p 80:3000') +
+                          /* Expose port 3000 on the container as port 443 on the
+                          * host machine. */
+                          '-p 443:3000 ' :
+                          /* Only use HTTP. */
+                          '-p 80:3000') +
                         /* Volume in keys for HTTPS. */
                         '-v /etc/letsencrypt/live/furkleindustries.com/:/etc/furkleindustries-homepage/secrets/ ' +
                         /* Run from the furkleindustries-homepage image. */
