@@ -98,7 +98,7 @@ const dockerRun = async () => {
                         /* Volume in keys for HTTPS. */
                         '-v /etc/letsencrypt/live/furkleindustries.com/:/etc/furkleindustries-homepage/secrets/ ' +
                         /* Run from the furkleindustries-homepage image. */
-                        'icenineas/hellox-client');
+                        'furkleindustries-homepage');
 
   console.log(`Ran ${containerName} container.`);
   console.log('dockerRun task complete.');
