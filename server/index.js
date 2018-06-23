@@ -70,7 +70,7 @@ let isBuilt = false;
 
 /* Directory with keys in it. Currently volumed with Docker from the host
  * filesystem. */
-const letsEncryptDir = resolve(projectPath, 'private');
+const letsEncryptDir = resolve(projectPath, 'secrets');
 
 const getSpdyOptions = () => ({
   cert: readFileSync(resolve(letsEncryptDir, 'fullchain.pem')),
@@ -93,7 +93,7 @@ const SECONDARY_PORT = 3001;
 const server = h2 ? spdy.createServer(getSpdyOptions(), app) : app;
 server.keepAliveTimeout = 5;
 
-if (h2) {
+if (h2) { 
   const second = express();
   second.use(enforce.HTTPS());
   second.listen(SECONDARY_PORT, (error) => {
