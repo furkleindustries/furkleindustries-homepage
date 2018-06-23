@@ -66,6 +66,20 @@ app.use((req, res, next) => {
 /* Serve all files statically for now. */
 app.use('/', express.static(resolve(projectPath, 'dist', 'furkleindustries-homepage')));
 
+app.get('/about', (req, res) => {
+  res.sendFile(resolve(projectPath, 'dist', 'furkleindustries-homepage', 'index.html'));
+});
+
+
+app.get('/user-stories', (req, res) => {
+  res.sendFile(resolve(projectPath, 'dist', 'furkleindustries-homepage', 'index.html'));
+});
+
+
+app.get('/resources', (req, res) => {
+  res.sendFile(resolve(projectPath, 'dist', 'furkleindustries-homepage', 'index.html'));
+});
+
 let isBuilt = false;
 
 /* Directory with keys in it. Currently volumed with Docker from the host

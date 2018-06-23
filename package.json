@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "start-prod": "npm run build && node server/index.js",
+    "start": "cross-env NODE_ENV='dev' ng serve",
+    "start-prod": "npm run build-prod && node server/index.js",
     "start-prod-h2": "cross-env h2='h2' npm run start-prod",
     "build": "ng build",
+    "build-prod": "cross-env production='true' npm run build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
