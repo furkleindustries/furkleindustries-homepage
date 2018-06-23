@@ -96,7 +96,7 @@ const dockerRun = async () => {
                           /* Only use HTTP. */
                           '-p 80:3000') +
                         /* Volume in keys for HTTPS. */
-                        '-v /etc/letsencrypt/live/furkleindustries.com/:/etc/furkleindustries-homepage/secrets/ ' +
+                        '-v /etc/letsencrypt/live/:/etc/furkleindustries-homepage/secrets/ ' +
                         /* Run from the furkleindustries-homepage image. */
                         'furkleindustries-homepage');
 
