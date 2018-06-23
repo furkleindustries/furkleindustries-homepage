@@ -1,3 +1,3 @@
-#! /usr/bin/sh
+#! sh
 
 dockerKill.sh && dockerBuild.sh && dockerRun.sh && echo 'dockerUp task complete.'

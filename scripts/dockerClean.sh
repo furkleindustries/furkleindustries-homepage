@@ -1,3 +1,3 @@
-#! /usr/bin/sh
+#! sh
 
 docker system prune -f && echo 'dockerClean task complete.'
