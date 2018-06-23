@@ -27,6 +27,7 @@
     "express": "^4.16.3",
     "express-sslify": "^1.2.0",
     "express-static-gzip": "^0.3.2",
+    "gulp-cli": "^2.0.1",
     "rxjs": "^6.2.1",
     "sass": "^1.6.1",
     "serve-favicon": "^2.5.0",
