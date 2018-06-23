@@ -109,9 +109,9 @@ const dockerRun = async () => {
                           * host machine. */
                           '-p 443:3000 ' :
                           /* Or only use HTTP. */
-                          '-p 80:3000') +
+                          '-p 80:3000 ') +
                         /* Run from the furkleindustries-homepage image. */
-                        'furkleindustries-homepage');
+                        imageName);
 
   console.log(`Ran ${containerName} container.`);
   console.log('dockerRun task complete.');
