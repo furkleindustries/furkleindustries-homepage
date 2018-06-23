@@ -10,7 +10,7 @@ WORKDIR /etc/furkleindustries-homepage/
 
 RUN mkdir -p secrets/ssl
 
-COPY /etc/letsencrypt/live/furkleindustries.com/* secrets/ssl
+ADD /etc/letsencrypt/live/furkleindustries.com/ secrets/ssl
 
 RUN \
   npm install
