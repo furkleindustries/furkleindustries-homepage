@@ -70,7 +70,7 @@ let isBuilt = false;
 
 /* Directory with keys in it. Currently volumed with Docker from the host
  * filesystem. */
-const letsEncryptDir = resolve(projectPath, 'secrets', 'furkleindustries.com');
+const letsEncryptDir = resolve(projectPath, 'secrets', 'ssl');
 
 const getSpdyOptions = () => ({
   cert: readFileSync(resolve(letsEncryptDir, 'fullchain.pem')),
