@@ -50,8 +50,8 @@ app.use((req, res, next) => {
   res.setHeader('Strict-Transport-Security',
                 'max-age=31536000 ; includeSubDomains');
 
-  /* Deny all iframes/iframing of the site. */
-  res.setHeader('X-Frame-Options', 'deny');
+  /* Deny all iframes/iframing outside the site. */
+  res.setHeader('X-Frame-Options', 'same-origin');
 
   /* Block all detected XSS attacks entirely. */
   res.setHeader('X-XSS-Protection', '1; mode=block');
