@@ -1,3 +1,3 @@
 #!/bin/sh
 
-dockerKill.sh && dockerBuild.sh && dockerRun.sh && echo 'dockerUp task complete.'
+/etc/furkleindustries-homepage/dockerKill.sh && /etc/furkleindustries-homepage/dockerBuild.sh && /etc/furkleindustries-homepage/dockerRun.sh && echo 'dockerUp task complete.'

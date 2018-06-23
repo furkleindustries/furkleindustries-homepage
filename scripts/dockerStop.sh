@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker stop "$CONTAINER_NAME" && echo 'dockerStop task complete.'
+docker stop furkleindustries-homepage && echo 'dockerStop task complete.'

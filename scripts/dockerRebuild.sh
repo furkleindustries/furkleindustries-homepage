@@ -1,3 +1,3 @@
 #!/bin/sh
 
-dockerKill.sh && dockerClean.sh && dockerBuild.sh && dockerRun.sh && echo 'dockerRebuild task complete.'
+/etc/furkleindustries-homepage/dockerKill.sh && /etc/furkleindustries-homepage/dockerClean.sh && /etc/furkleindustries-homepage/dockerBuild.sh && /etc/furkleindustries-homepage/dockerRun.sh && echo 'dockerRebuild task complete.'

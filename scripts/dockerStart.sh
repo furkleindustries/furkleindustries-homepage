@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker start "$CONTAINER_NAME" && echo 'dockerStart task complete.'
+docker start furkleindustries-homepage && echo 'dockerStart task complete.'

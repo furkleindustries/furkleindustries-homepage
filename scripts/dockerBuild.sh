@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker build -t "$IMAGE_NAME" /etc/furkleindustries-homepage
+docker build -t furkleindustries-homepage /etc/furkleindustries-homepage
