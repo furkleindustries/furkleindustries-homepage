@@ -82,6 +82,21 @@ module.exports.dockerStop = dockerStop;
 
 const dockerRun = async () => {
   console.log(`Running ${containerName} container.`);
+  if (h2) {
+    const projDir = '/etc/furkleindustries-homepage/';
+
+    const mk = promisify(mkdir);
+    await mk(`${projDir}secrets/`);
+    await mk(`${projDir}secrets/ssl/`);
+
+    const cp = promisify(copyFile);
+    const sslDir = '/etc/letsencrypt/live/furkleindustries.com/';
+    await Promise.all([
+      cp(`${sslDir}privkey.pem`, `${projDir}/secrets/ssl/`),
+      cp(`${sslDir}fullchain.pem`, `${projDir}/secrets/ssl/`),
+    ]);
+  }
+
   await promisify(exec)('docker run ' +
                         /* Run the process on a separate thread from the shell. */
                         '-d ' +
@@ -93,10 +108,8 @@ const dockerRun = async () => {
                           /* Expose port 3000 on the container as port 443 on the
                           * host machine. */
                           '-p 443:3000 ' :
-                          /* Only use HTTP. */
+                          /* Or only use HTTP. */
                           '-p 80:3000') +
-                        /* Volume in keys for HTTPS. */
-                        '-v /etc/letsencrypt/live/:/etc/furkleindustries-homepage/secrets/ ' +
                         /* Run from the furkleindustries-homepage image. */
                         'furkleindustries-homepage');
 
