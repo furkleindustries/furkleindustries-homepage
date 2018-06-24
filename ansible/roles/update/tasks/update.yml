@@ -11,7 +11,8 @@
     update: yes
 
 - name: Kill Docker container
-  command: "sh -c 'cd /etc/furkleindustries-homepage && sh scripts/dockerKill'"
+  command: "sh -c 'cd /etc/furkleindustries-homepage && sh scripts/dockerKill.sh'"
+  ignore_errors: yes
 
 - name: Docker up
-  command: "sh -c 'cd /etc/furkleindustries-homepage/ && sh scripts/dockerUp'"
+  command: "sh -c 'cd /etc/furkleindustries-homepage/ && sh scripts/dockerUp.sh'"

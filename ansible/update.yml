@@ -1,0 +1,10 @@
+---
+# This playbook provisions the web server for the Furkle Industries homepage.
+
+- name: Create webserver
+  hosts: web
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  roles:
+    - update
