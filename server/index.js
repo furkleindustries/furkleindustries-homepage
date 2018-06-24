@@ -6,6 +6,7 @@ console.log(`\nIs HTTP2? ${h2}`);
 
 console.log('Loading dependencies.');
 
+const compression       = require('compression');
 const express           = require('express');
 const enforce           = require('express-sslify');
 const expressStaticGzip = require('express-static-gzip');
@@ -28,6 +29,8 @@ console.log('Dependencies loaded.\n');
 const projectPath = resolve(__dirname, '..');
 
 const app = express();
+
+app.use(compression());
 
 /* Header middleware. */
 app.use((req, res, next) => {
