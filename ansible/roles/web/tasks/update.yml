@@ -1,0 +1,17 @@
+---
+# This playbook updates the project repo and rebuilds the Docker container.
+
+- name: Start Docker
+  service: name=docker state=started
+
+- name: Update repository
+  git:
+    repo: https://github.com/furkleindustries/furkleindustries-homepage
+    dest: /etc/furkleindustries-homepage
+    update: yes
+
+- name: Kill Docker container
+  command: "sh -c 'cd /etc/furkleindustries-homepage && sh scripts/dockerKill'"
+
+- name: Docker up
+  command: "sh -c 'cd /etc/furkleindustries-homepage/ && sh scripts/dockerUp'"
