@@ -93,7 +93,7 @@ app.use('/fictions', express.static(resolve(DIST_FOLDER, 'browser', 'fictions'))
 app.use('/images', express.static(resolve(DIST_FOLDER, 'browser', 'images')));
 
 // Serve static files from dist/browser
-app.use('*.*', express.static(resolve(DIST_FOLDER, 'browser')));
+app.get('*.*', express.static(resolve(DIST_FOLDER, 'browser')));
 
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
