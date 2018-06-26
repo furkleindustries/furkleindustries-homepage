@@ -12,6 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { UserStoriesComponent } from './user-stories/user-stories.component';
 import { ResourcesComponent } from './resources/resources.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { ResourcesComponent } from './resources/resources.component';
   imports: [
     BrowserModule.withServerTransition({ appId: 'furkleindustries-homepage' }),
     AppRoutingModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
   ],
 
   providers: [],

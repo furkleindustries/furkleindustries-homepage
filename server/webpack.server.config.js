@@ -2,12 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: { server: './server/server.ts' },
+  entry: {
+    prerender: './server/prerender.ts',
+    server: './server/server.ts',
+  },
   resolve: { extensions: ['.js', '.ts'] },
   target: 'node',
   mode: 'none',
   // this makes sure we include node_modules and other 3rd party libraries
-  externals: [/node_modules/],
+  externals: [ /node_modules/, ],
   output: {
     path: path.resolve(__dirname, '..', 'dist', 'server'),
     filename: '[name].js'
@@ -21,16 +24,16 @@ module.exports = {
     new webpack.ContextReplacementPlugin(
       /(.+)?angular(\\|\/)core(.+)?/,
       path.resolve('..', __dirname, 'src'), // location of your src
-      {} // a map of your routes
+      {},
     ),
     new webpack.ContextReplacementPlugin(
       /(.+)?express(\\|\/)(.+)?/,
       path.resolve('..', __dirname, 'src'),
-      {}
+      {},
     ),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.h2': JSON.stringify(process.env.h2)
     }),
-  ]
+  ],
 };

@@ -3,16 +3,18 @@
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",
-    "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
+    "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server && npm run prerender",
     "serve:ssr": "cross-env h2='h2' npm run build:ssr && node dist/server/server",
     "build:client-and-server-bundles": "ng build --prod && ng run furkleindustries-homepage:server",
     "webpack:server": "webpack --config server/webpack.server.config.js --progress --colors",
+    "prerender": "node dist/server/prerender",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ansible": "cross-env ANSIBLE_DEBUG=1 ansible-playbook -i ansible/hosts ansible/site.yml"
+    "ansible:provision": "ansible-playbook -i ansible/hosts ansible/provision.yml",
+    "ansible:update": "ansible-playbook -i ansible/hosts ansible/update.yml"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +27,7 @@
     "@angular/platform-browser": "^6.0.5",
     "@angular/platform-browser-dynamic": "^6.0.5",
     "@angular/platform-server": "^6.0.6",
+    "@angular/pwa": "^0.6.8",
     "@angular/router": "^6.0.5",
     "@nguniversal/express-engine": "^6.0.0",
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
@@ -39,7 +42,8 @@
     "serve-favicon": "^2.5.0",
     "spdy": "^3.4.7",
     "ts-loader": "^4.4.1",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "@angular/service-worker": "^6.0.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.6.8",

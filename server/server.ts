@@ -76,7 +76,7 @@ app.use((req, res, next) => {
   res.setHeader('Strict-Transport-Security',
                 'max-age=31536000 ; includeSubDomains');
 
-  /* Deny all iframes/iframing outside the site. */
+  /* Deny all iframing outside the site. */
   res.setHeader('X-Frame-Options', 'sameorigin');
 
   /* Block all detected XSS attacks entirely. */
@@ -87,7 +87,7 @@ app.use((req, res, next) => {
 });
 
 /* Favicon middleware. */
-//app.use(serveFavicon(resolve(imagesPath, 'favicon-96x96.png')));
+app.use(serveFavicon(resolve(DIST_FOLDER, 'browser', 'icons', 'favicon.ico')));
 
 app.use('/fictions', express.static(resolve(DIST_FOLDER, 'browser', 'fictions')));
 app.use('/images', express.static(resolve(DIST_FOLDER, 'browser', 'images')));
