@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { INavBarItemProps } from '../navbar/navbar.component';
+import { INavBarItemProps } from '../../navBarItems';
 
 @Component({
   selector: 'app-navbar-item',

@@ -1,0 +1,131 @@
+@import '../../sass/variables.scss';
+@import '../../sass/mixins.scss';
+
+.Home {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($black, 0.5);
+
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.Background {
+  pointer-events: none;
+}
+
+section.Intro {
+  .Background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/abstract-abstract-photo-art-1022928.jpg');
+    background-position: center;
+    background-size: cover;
+    opacity: 0.50;
+    filter: blur(2px);
+  }
+}
+
+.HeroContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  width: 85%;
+  padding: 7%;
+  top: 50%;
+  margin: 0 auto;
+  border-radius: 20px;
+  box-sizing: border-box;
+
+  transform: translateY(-50%);
+
+  background: rgba($dark-gray, 0.95);
+
+  text-align: center;
+  color: $white;
+  text-shadow:
+    -2px -2px 1px $black,  
+    2px -2px 1px $black,
+    -2px 2px 1px $black,
+    2px 2px 1px $black;
+  
+  .Headline {
+    flex: 1 0 100%;
+    margin: 0 0 20px 0;
+    font-size: 17pt;
+    font-weight: 400;
+  }
+
+  .Subheadline {
+    margin: 0;
+    font-size: 11pt;
+    font-weight: 300;
+  }
+}
+
+.Next {
+  padding: 0;
+  margin-top: 20px;
+  border: 0;
+  background: transparent;
+  color: $white;
+  font: inherit;
+  font-size: 12pt;
+  text-shadow: 0 0 3px rgba($gold, 0.5);
+  font-weight: 400;
+  cursor: pointer;
+
+  @extend %button-hover;
+}
+
+section.Navgrid {
+  .Background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/ancient-architecture-beautiful-1182647.jpg');
+    background-position: center;
+    background-size: cover;
+    opacity: 0.6;
+    filter:
+      blur(2px)
+      saturate(0.25)
+      contrast(1.5)
+      hue-rotate(190deg);
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .HeroContainer {
+    width: 70%;
+    padding: 5%;
+    border-radius: 45px;
+
+    .Headline {
+      font-size: 42pt;
+      margin: 0 0 40px 0;
+      letter-spacing: 1.5pt;
+    }
+
+    .Subheadline {
+      font-size: 25pt;
+    }
+  }
+
+  .Next {
+    margin-top: 40px;
+    font-size: 30pt;
+    text-shadow: 0 0 6px rgba($gold, 0.5);
+  }
+}

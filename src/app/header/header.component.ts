@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { INavBarItemProps } from '../navbar/navbar.component';
+import { INavBarItemProps } from '../navBarItems';
 
 @Component({
   selector: 'app-header',
@@ -7,8 +7,6 @@ import { INavBarItemProps } from '../navbar/navbar.component';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  @Input() navbarItems: Array<INavBarItemProps>;
-
   constructor() { }
 
   ngOnInit() {
