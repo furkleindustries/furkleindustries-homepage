@@ -2,8 +2,25 @@
 $white: rgb(240, 240, 240);
 $black: rgb(15, 15, 15);
 $dark-gray: rgb(25, 25, 25);
-$light-gray: rgb(75, 75, 75);
+$medium-gray: rgb(75, 75, 75);
+$light-gray: rgb(125, 125, 125);
+$lighter-gray: rgb(175, 175, 175);
+$dim-white: rgb(225, 225, 225);
 $gold: rgb(212,175,55);
+$red: rgb(255, 55, 44);
+/* End colors */
 
 /* Times */
 $button-hover-duration: 350ms;
+$card-hover-duration:   500ms;
+/* End times */
+
+/* Breakpoint positions */
+/* $small-mobile-breakpoint is not used at present. Instead, smallest layout
+ * sizes are used as the default, non-media-query values. */
+$small-mobile-breakpoint:  0px;
+
+$large-mobile-breakpoint:  600px;
+$monitor-breakpoint:       1000px;
+$large-monitor-breakpoint: 1500px;
+/* End breakpoint positions */

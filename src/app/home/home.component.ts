@@ -31,7 +31,8 @@ export class HomeComponent implements OnInit {
     const thisElem = document.getElementsByTagName('app-home')[0];
     if (!thisElem) {
       throw new Error(
-        'The HomeComponent.scrollToSection')
+        'The app-home element could not be found when ' +
+        'HomeComponent.scrollToSection was executing.')
     }
 
     const sections = thisElem.getElementsByTagName('section');
