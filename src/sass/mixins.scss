@@ -1,0 +1,30 @@
+@import './variables.scss';
+
+%button-hover {
+  transition: color $button-hover-duration;
+  &:hover, &:active {
+    color: $red;
+  }
+}
+
+%card-hover {
+  transition:
+    color          $card-hover-duration,
+    opacity        $card-hover-duration,
+    filter         $card-hover-duration,
+    text-shadow    $card-hover-duration;
+
+  &:hover, &:active {
+    opacity: 0.8;
+    text-shadow:
+      -1px -1px 1.5px $white,  
+       1px -1px 1.5px $white,
+      -1px  1px 1.5px $white,
+       1px  1px 1.5px $white;
+  }
+}
+
+%light-font {
+  font-family: 'Montserrat Light', 'Montserrat Subset', sans-serif;
+  font-weight: 300;
+}

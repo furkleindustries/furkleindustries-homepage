@@ -25,6 +25,10 @@ let previousRender = Promise.resolve();
 
 // Iterate each route path
 ROUTES.forEach(route => {
+  if (route === '**') {
+    return;
+  }
+
   const fullPath = join(BROWSER_FOLDER, route);
 
   // Make sure the directory structure is there

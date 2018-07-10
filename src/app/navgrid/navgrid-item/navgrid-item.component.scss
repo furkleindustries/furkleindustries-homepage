@@ -1,0 +1,75 @@
+@import '../../../sass/mixins.scss';
+@import '../../../sass/variables.scss';
+
+:host {
+  flex: 0 1 44%;
+
+  /* Don't show the items excluded with *ngIf. */
+  &:empty {
+    display: none;
+  }
+}
+
+.NavgridItem {
+  margin: 6%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  
+  background: rgba($light-gray, 0.05);
+
+  &, .Link {
+    position: relative;
+    display: block;
+  }
+
+  .Link {
+    padding: 40px 20px;
+
+    color: inherit;
+    text-decoration: unset;
+    text-align: center;
+    
+    @extend %card-hover;
+
+    &:hover {
+      .Background {
+        opacity: 0.125;
+        filter: blur(2px);
+      }
+    }
+  }
+
+  .Background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    opacity: 0.125;
+
+    filter: blur(0.5px);
+
+    /* Source is computed from input object in Angular component. */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    transition:
+      opacity $card-hover-duration,
+      filter  $card-hover-duration;
+
+    pointer-events: none;
+  }
+
+
+  .Title {
+    margin: 0 0 20px 0;
+    font-size: 20pt;
+  }
+
+  .Description {
+    margin: 0;
+    font-size: 15pt;
+  }
+}

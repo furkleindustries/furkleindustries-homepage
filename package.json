@@ -13,8 +13,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ansible:provision": "ansible-playbook -i ansible/hosts ansible/provision.yml",
-    "ansible:update": "ansible-playbook -i ansible/hosts ansible/update.yml"
+    "ansible:provision": "cd ansible && ansible-playbook -i hosts provision.yml",
+    "ansible:update": "cd ansible && ansible-playbook -i hosts update.yml"
   },
   "private": true,
   "dependencies": {

@@ -6,14 +6,19 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { NavbarItemComponent } from './navbar-item/navbar-item.component';
+import { NavbarItemComponent } from './navbar/navbar-item/navbar-item.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
-import { UserStoriesComponent } from './user-stories/user-stories.component';
+import { ProjectsComponent } from './projects/projects.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ProjectsListComponent } from './projects-list/projects-list.component';
+import { ProjectsListItemComponent } from './projects-list/projects-list-item/projects-list-item.component';
+import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { NavgridComponent } from './navgrid/navgrid.component';
+import { NavgridItemComponent } from './navgrid/navgrid-item/navgrid-item.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +29,13 @@ import { environment } from '../environments/environment';
     NavbarItemComponent,
     HomeComponent,
     AboutComponent,
-    UserStoriesComponent,
+    ProjectsComponent,
     ResourcesComponent,
+    ProjectsListComponent,
+    ProjectsListItemComponent,
+    FourOhFourComponent,
+    NavgridComponent,
+    NavgridItemComponent,
   ],
 
   imports: [

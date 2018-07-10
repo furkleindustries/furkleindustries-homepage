@@ -1,5 +1,6 @@
-<article class="App">
-  <app-header [navbarItems]="navbarItems"></app-header>
+<article class="App {{router.url.slice(1) || 'home'}}">
+  <!-- Only display the header on pages other than the home page. -->
+  <app-header *ngIf="router.url !== '/'"></app-header>
 
   <router-outlet></router-outlet>
   

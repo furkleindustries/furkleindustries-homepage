@@ -1,0 +1,14 @@
+<!-- Don't display a grid item for the root page. -->
+<div class="NavgridItem" *ngIf="!item.root">
+  <a class="Link" href="{{item.href}}">
+    <div class="Background" [style.backgroundImage]="sanitizedImgSrc"></div>
+
+    <h2 class="Title">
+      {{item.text}}
+    </h2>
+
+    <p class="Description">
+      {{item.description}}
+    </p>
+  </a>
+</div>

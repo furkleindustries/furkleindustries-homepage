@@ -1,0 +1,237 @@
+@import '../../sass/variables.scss';
+@import '../../sass/mixins.scss';
+
+.Home {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($black, 0.5);
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &.Intro {
+    .Background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      
+      background-image: url('/images/architecture-building-circular-39656_1000w.jpg');
+      :host-context(.webp) & {
+        background-image: url('/images/architecture-building-circular-39656_1000w.webp');
+      }
+
+      background-position: center;
+      background-size: cover;
+      
+      opacity: 0.50;
+      
+      transform: rotateY(180deg);
+
+      filter:
+        blur(1px)
+        saturate(0.2)
+        contrast(1.1)
+        hue-rotate(200deg);
+    }
+  }
+
+  &.Navgrid {
+    .Background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      background-color: $light-gray;
+      
+      background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/abstract-abstract-photo-art-1022928_1000w.jpg');
+      :host-context(.webp) & {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/abstract-abstract-photo-art-1022928_1000w.webp')
+      }
+      
+      background-position: center;
+      background-size: cover;
+      
+      opacity: 0.5;
+    
+      filter: blur(1px);
+    }
+  }
+}
+
+.Container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  width: 85%;
+  padding: 7%;
+  top: 50%;
+  margin: 0 auto;
+  border-radius: 20px;
+  box-sizing: border-box;
+
+  transform: translateY(-50%);
+
+  &.Hero {
+    background: rgba($dark-gray, 0.925);
+
+    text-align: center;
+    color: $white;
+    text-shadow:
+      -1px -1px 1px $black,  
+       1px -1px 1px $black,
+      -1px  1px 1px $black,
+       1px  1px 1px $black;
+    
+    .Headline {
+      flex: 1 0 100%;
+      margin: 0 0 20px 0;
+      
+      font-size: 27pt;
+      letter-spacing: 1pt;
+    }
+
+    .Subheadline {
+      flex: 1 0 100%;
+      margin: 0;
+      font-size: 18pt;
+
+      @extend %light-font;
+    }
+
+    .Next {
+      margin: 30px 0 0 0;
+    }
+  }
+
+  &.Navgrid {
+    /* Critically important for z-ordering. */
+    position: relative;
+    /* */
+
+    background: rgba($white, 0.95);
+    color: $black;
+  }
+}
+
+.Background {
+  pointer-events: none;
+}
+
+.Next {
+  padding: 0;
+  margin-top: 30px;
+  border: 0;
+  
+  background: transparent;
+  
+  color: $white;
+  font: inherit;
+  font-size: 12pt;
+  font-weight: 400;
+  text-shadow: 0 0 3px rgba($gold, 0.5);
+  
+  cursor: pointer;
+
+  @extend %button-hover;
+  @extend %light-font;
+}
+
+@media screen and (min-width: $large-mobile-breakpoint) {
+  section {
+    &.Intro {
+      .Background {        
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/architecture-building-circular-39656_1500w.jpg');
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/architecture-building-circular-39656_1500w.webp');
+        }
+
+        filter:
+          blur(1.5px)
+          saturate(0.2)
+          contrast(1.1)
+          hue-rotate(200deg);
+      }
+    }
+
+    &.Navgrid {
+      .Background {        
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/abstract-abstract-photo-art-1022928_1500w.jpg');
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/abstract-abstract-photo-art-1022928_1500w.webp')
+        }
+
+        filter: blur(1.5px);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $monitor-breakpoint) {
+  section {
+    &.Intro {
+      .Background {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/architecture-building-circular-39656_1500w.jpg');     
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/architecture-building-circular-39656_1500w.webp');
+        }
+        
+        filter:
+          blur(2px)
+          saturate(0.2)
+          contrast(1.1)
+          hue-rotate(200deg);
+      }
+    }
+    
+    &.Navgrid {
+      .Background {
+        background-image: url('/images/abstract-abstract-photo-art-1022928_1500w.jpg');
+        :host-context(.webp) & {
+          background-image: url('/images/abstract-abstract-photo-art-1022928_1500w.webp')
+        }
+
+        filter: blur(2px);        
+      }
+    }
+  }
+  
+  .Container {
+    width: 70%;
+    padding: 7.5%;
+    border-radius: 45px;
+
+    &.Hero {
+      .Headline {
+        font-size: 38pt;
+        margin: 0 0 40px 0;
+        letter-spacing: 1.5pt;
+      }
+
+      .Subheadline {
+        font-size: 22pt;
+      }
+  
+      .Next {
+        margin-top: 40px;
+      }
+    }
+  }
+
+  .Next {
+    font-size: 24pt;
+    text-shadow: 0 0 6px rgba($gold, 0.5);
+  }
+}
+
+@media screen and (min-width: $large-monitor-breakpoint) {
+
+}

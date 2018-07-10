@@ -1,10 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavbarItemComponent, } from '../navbar-item/navbar-item.component';
-
-export interface INavBarItemProps {
-  href: string,
-  text: string,
-}
+import { NavbarItemComponent } from '../navbar/navbar-item/navbar-item.component';
+import { NavbarItemsService } from '../navbar-items.service';
+import { INavBarItemProps } from '../navBarItems';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,11 +10,15 @@ export interface INavBarItemProps {
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @Input() items: Array<INavBarItemProps>;
+  navbarItems: Array<INavBarItemProps>;
 
-  constructor() { }
+  constructor(private navbarItemsService: NavbarItemsService) { }
 
   ngOnInit() {
+    this.navbarItems = this.getNavbarItems();
   }
 
+  getNavbarItems() {
+    return this.navbarItemsService.getNavbarItems();
+  }
 }
