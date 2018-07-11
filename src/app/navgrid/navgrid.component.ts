@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { INavBarItemProps } from '../navBarItems';
+import { INavBarItemProps } from '../navbarItems';
 import { NavbarItemsService } from '../navbar-items.service';
 
 @Component({

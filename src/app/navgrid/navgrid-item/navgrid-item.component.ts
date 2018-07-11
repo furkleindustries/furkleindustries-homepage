@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Sanitizer } from '@angular/core';
-import { INavBarItemProps } from '../../navBarItems';
+import { INavBarItemProps } from '../../navbarItems';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({

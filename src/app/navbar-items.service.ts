@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { navbarItems } from './navBarItems';
+import { navbarItems } from './navbarItems';
 
 @Injectable({
   providedIn: 'root'
