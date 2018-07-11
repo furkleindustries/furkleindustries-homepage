@@ -11,6 +11,9 @@ secrets/
 # dependencies
 /node_modules
 
+# vagrant
+.vagrant/
+
 # IDEs and editors
 /.idea
 .project
