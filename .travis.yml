@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - "8"
+
+branches:
+  only:
+    - master
+
+addons:
+  chrome: stable
+
+cache:
+  directories:
+    - "node_modules"
+
+install:
+  - npm install
+
+script:
+  - npm run all-tests

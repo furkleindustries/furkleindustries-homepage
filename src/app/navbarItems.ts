@@ -3,7 +3,7 @@ export interface INavBarItemProps {
   text:         string;
   description?: string;
   root?:        boolean;
-  imgSrc?:      string;
+  imgId?:      string;
 }
 
 export const navbarItems: Array<INavBarItemProps> = [
@@ -18,20 +18,20 @@ export const navbarItems: Array<INavBarItemProps> = [
     href: '/about',
     text: 'About',
     description: 'What\'s all this about?',
-    imgSrc: '/images/clouds-cloudy-cold-167699.jpg',
+    imgId: 'Cloudy',
   },
 
   {
     href: '/projects',
     text: 'Projects',
     description: 'A selection of recent projects.',
-    imgSrc: '/images/dark-guidance-highway-127260.jpg',
+    imgId: 'Highway',
   },
 
   {
     href: '/resources',
     text: 'Resources',
     description: 'Links to Furkle Industries repositories and services.',
-    imgSrc: '/images/aerial-architectural-design-architecture-1036657.jpg',
+    imgId: 'Cityscape',
   },
 ];

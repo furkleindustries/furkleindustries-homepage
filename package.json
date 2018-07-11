@@ -11,8 +11,10 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test:headless": "ng test --watch=false --progress false",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "travis-tests": "npm run lint && npm run test:headless && xvfb-run npm run e2e",
     "ansible:provision": "cd ansible && ansible-playbook -i hosts provision.yml",
     "ansible:update": "cd ansible && ansible-playbook -i hosts update.yml"
   },

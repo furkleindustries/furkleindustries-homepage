@@ -9,6 +9,10 @@
 }
 
 section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 100%;
   height: 100%;
   position: relative;
@@ -72,13 +76,10 @@ section {
   flex-wrap: wrap;
 
   width: 85%;
+  max-height: 85%;
   padding: 7%;
-  top: 50%;
-  margin: 0 auto;
   border-radius: 20px;
   box-sizing: border-box;
-
-  transform: translateY(-50%);
 
   &.Hero {
     background: rgba($dark-gray, 0.925);
@@ -119,6 +120,10 @@ section {
 
     background: rgba($white, 0.95);
     color: $black;
+
+    @media screen and (max-width: $monitor-breakpoint) and (min-aspect-ratio: 11/10) {
+      padding: 2%;
+    }
   }
 }
 

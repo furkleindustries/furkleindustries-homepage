@@ -4,7 +4,7 @@ export interface IProjectListItemProps {
   synopsis: string;
 }
 
-export const projects = [ 
+export const projects = [
   {
     href: '/projects/helloX',
     title: 'Hello X',

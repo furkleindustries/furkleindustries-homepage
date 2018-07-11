@@ -1,5 +1,5 @@
 <div class="NavbarItem">
-  <a href="{{item.href}}">
-    {{item.text}}
+  <a href="{{(item || {}).href}}">
+    {{(item || {}).text}}
   </a>
 </div>

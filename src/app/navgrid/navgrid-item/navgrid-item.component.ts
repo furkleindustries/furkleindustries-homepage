@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Sanitizer } from '@angular/core';
 import { INavBarItemProps } from '../../navbarItems';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-navgrid-item',
@@ -9,12 +8,8 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 })
 export class NavgridItemComponent implements OnInit {
   @Input() item: INavBarItemProps;
-  sanitizedImgSrc: SafeStyle;
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor() { }
 
-  ngOnInit() {
-    const bypass = this.sanitizer.bypassSecurityTrustStyle;
-    this.sanitizedImgSrc = bypass(`url(${this.item.imgSrc})`);
-  }
+  ngOnInit() { }
 }

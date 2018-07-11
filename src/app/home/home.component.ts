@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   scrollToSection(section: number) {
     /* NOTE: the section argument is 1-indexed, e.g. section=1 refers to the
-     * first section, not the second. */ 
+     * first section, not the second. */
 
     if (!document || !document.getElementsByTagName) {
       throw new Error(
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
     if (!thisElem) {
       throw new Error(
         'The app-home element could not be found when ' +
-        'HomeComponent.scrollToSection was executing.')
+        'HomeComponent.scrollToSection was executing.');
     }
 
     const sections = thisElem.getElementsByTagName('section');
