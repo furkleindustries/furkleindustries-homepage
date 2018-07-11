@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavbarItemComponent } from '../navbar/navbar-item/navbar-item.component';
 import { NavbarItemsService } from '../navbar-items.service';
-import { INavBarItemProps } from '../navBarItems';
+import { INavBarItemProps } from '../navbarItems';
 import { Router } from '@angular/router';
 
 @Component({
