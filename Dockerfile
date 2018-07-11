@@ -11,4 +11,4 @@ WORKDIR /etc/furkleindustries-homepage/
 RUN \
   npm install
 
-CMD [ "npm", "run", "serve:ssr" ]
+#CMD [ "npm", "run", "serve:ssr" ]
