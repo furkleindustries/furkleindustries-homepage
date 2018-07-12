@@ -201,7 +201,7 @@ section {
       .Background {
         background-image: url('https://s3.amazonaws.com/furkleindustries-homepage//images/abstract-abstract-photo-art-1022928_1500w.jpg');
         :host-context(.webp) & {
-          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage//images/abstract-abstract-photo-art-1022928_1500w.webp')
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/abstract-abstract-photo-art-1022928_1500w.webp')
         }
 
         filter: blur(2px);        
