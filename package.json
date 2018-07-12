@@ -10,9 +10,11 @@
     "prerender": "node dist/server/prerender",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --watch=true --progress true",
+    "test:headless": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "travis-tests": "npm run lint && npm run test:headless && npm run e2e",
     "ansible:provision": "cd ansible && ansible-playbook -i hosts provision.yml",
     "ansible:update": "cd ansible && ansible-playbook -i hosts update.yml"
   },

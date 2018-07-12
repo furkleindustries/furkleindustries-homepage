@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { NavbarItemComponent } from '../navbar/navbar-item/navbar-item.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,7 +10,11 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [
+        HeaderComponent,
+        NavbarComponent,
+        NavbarItemComponent,
+      ],
     })
     .compileComponents();
   }));

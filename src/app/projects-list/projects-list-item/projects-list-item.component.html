@@ -1,11 +1,11 @@
 <div class="ProjectsListItem">
   <h4>
-    <a href="{{project.href}}">
-      {{project.title}}
+    <a href="{{(project || {}).href}}">
+      {{(project || {}).title}}
     </a>
   </h4>
 
   <div>
-    {{project.synopsis}}
+    {{(project || {}).synopsis}}
   </div>
 </div>

@@ -8,7 +8,9 @@ describe('NavbarItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavbarItemComponent ]
+      declarations: [
+        NavbarItemComponent,
+      ]
     })
     .compileComponents();
   }));

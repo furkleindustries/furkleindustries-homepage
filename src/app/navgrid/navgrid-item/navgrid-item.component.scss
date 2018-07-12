@@ -2,33 +2,65 @@
 @import '../../../sass/variables.scss';
 
 :host {
-  flex: 0 1 44%;
+  position: relative;
+  flex: 1 1 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 150px;
+  margin: 10px;
 
   /* Don't show the items excluded with *ngIf. */
   &:empty {
     display: none;
   }
+
+  @media screen and (min-width: $large-mobile-breakpoint) {
+    flex: 1 1 40%;
+    height: 200px;
+    margin: 20px;
+  }
+
+  @media screen and (max-width: $monitor-breakpoint) and (min-aspect-ratio: 11/10) {
+    flex: 1 1 40%;
+    height: 100px;
+    margin: 10px;
+  }
 }
 
 .NavgridItem {
-  margin: 6%;
-  border-radius: 10px;
-  box-sizing: border-box;
-  
   background: rgba($light-gray, 0.05);
+  position: relative;
 
-  &, .Link {
-    position: relative;
+  &, .Link, .Background {
     display: block;
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 8px;
+
+    @media screen and (min-width: $large-mobile-breakpoint) {
+      border-radius: 12px;
+    }
   }
 
   .Link {
-    padding: 40px 20px;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
 
     color: inherit;
     text-decoration: unset;
     text-align: center;
-    
+
     @extend %card-hover;
 
     &:hover {
@@ -36,6 +68,40 @@
         opacity: 0.125;
         filter: blur(2px);
       }
+    }
+
+    @media screen and (min-width: $large-mobile-breakpoint) {
+      padding: 40px 20px;
+    }
+
+    @media screen and (max-width: $monitor-breakpoint) and (min-aspect-ratio: 11/10) {
+      padding: 20px 10px;
+    }
+  }
+
+  .Title {
+    margin: 0 0 20px 0;
+    font-size: 16pt;
+
+    @media screen and (min-width: $large-mobile-breakpoint) {
+      font-size: 21pt;
+    }
+
+    @media screen and (max-width: $monitor-breakpoint) and (min-aspect-ratio: 11/10) {
+      font-size: 15pt;
+    }
+  }
+
+  .Description {
+    margin: 0;
+    font-size: 12pt;
+
+    @media screen and (min-width: $large-mobile-breakpoint) {
+      font-size: 16pt;
+    }
+
+    @media screen and (max-width: $monitor-breakpoint) and (min-aspect-ratio: 11/10) {
+      font-size: 11pt;
     }
   }
 
@@ -50,7 +116,8 @@
 
     filter: blur(0.5px);
 
-    /* Source is computed from input object in Angular component. */
+    /* Source is derived from injected class, derived from imgId property from
+     * source object. */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -60,16 +127,107 @@
       filter  $card-hover-duration;
 
     pointer-events: none;
-  }
 
+    &.Cloudy {
+      background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_500w.jpg');
 
-  .Title {
-    margin: 0 0 20px 0;
-    font-size: 20pt;
-  }
+      :host-context(.webp) & {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_500w.webp');
+      }
+    }
+    
+    &.Highway {
+      background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_500w.jpg');
 
-  .Description {
-    margin: 0;
-    font-size: 15pt;
+      :host-context(.webp) & {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_500w.webp');
+      }
+    }
+    
+    &.Cityscape {
+      background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_500w.jpg');
+
+      :host-context(.webp) & {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_500w.webp');
+      }
+    }
+
+    @media screen and (min-width: $large-mobile-breakpoint) {
+      .Cloudy {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_1000w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_1000w.webp');
+        }
+      }
+      
+      .Highway {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_1000w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_1000w.webp');
+        }
+      }
+
+      .Cityscape {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_1000w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_1000w.webp');
+        }
+      }
+    }
+
+    @media screen and (min-width: $monitor-breakpoint) {
+      .Cloudy {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_1500w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_1500w.webp');
+        }
+      }
+
+      .Highway {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_500w.webp');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_1500w.webp');
+        }
+      }
+      
+      .Cityscape {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_1500w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_1500w.webp');
+        }
+      }
+    }
+
+    @media screen and (min-width: $large-monitor-breakpoint) {
+      .Cloudy {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_2000w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/clouds-cloudy-cold-167699_2000w.webp');
+        }
+      }
+
+      .Highway {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_2000w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/dark-guidance-highway-127260_2000w.webp');
+        }
+      }
+
+      .Cityscape {
+        background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_2000w.jpg');
+
+        :host-context(.webp) & {
+          background-image: url('https://s3.amazonaws.com/furkleindustries-homepage/images/aerial-architectural-design-architecture-1036657_2000w.webp');
+        }
+      }
+    }
   }
 }

@@ -1,14 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavgridComponent } from './navgrid.component';
+import { NavgridItemComponent } from './navgrid-item/navgrid-item.component';
 
-describe('SectionGridComponent', () => {
+describe('NavgridComponent', () => {
   let component: NavgridComponent;
   let fixture: ComponentFixture<NavgridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavgridComponent ]
+      declarations: [
+        NavgridComponent,
+        NavgridItemComponent,
+      ],
     })
     .compileComponents();
   }));

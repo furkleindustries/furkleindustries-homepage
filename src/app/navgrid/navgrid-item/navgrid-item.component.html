@@ -1,14 +1,16 @@
 <!-- Don't display a grid item for the root page. -->
-<div class="NavgridItem" *ngIf="!item.root">
-  <a class="Link" href="{{item.href}}">
-    <div class="Background" [style.backgroundImage]="sanitizedImgSrc"></div>
+<div class="NavgridItem" *ngIf="!(item || {}).root">
+  <a class="Link" href="{{(item || {}).href}}">
+    <div class="{{(item || {}).imgId}} Background"></div>
 
-    <h2 class="Title">
-      {{item.text}}
-    </h2>
-
-    <p class="Description">
-      {{item.description}}
-    </p>
+    <div className="Container">
+      <h2 class="Title">
+        {{(item || {}).text}}
+      </h2>
+  
+      <p class="Description">
+        {{(item || {}).description}}
+      </p>
+    </div>
   </a>
 </div>
