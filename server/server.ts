@@ -87,7 +87,7 @@ app.use((req, res, next) => {
 });
 
 /* Favicon middleware. */
-app.use(serveFavicon(resolve(DIST_FOLDER, 'browser', 'icons', 'favicon.ico')));
+app.use(serveFavicon(resolve(DIST_FOLDER, 'browser', 'images', 'icons', 'favicon.ico')));
 
 app.use('/fictions', express.static(resolve(DIST_FOLDER, 'browser', 'fictions')));
 app.use('/images', express.static(resolve(DIST_FOLDER, 'browser', 'images')));
