@@ -17,7 +17,7 @@ const {
   writeFile,
 } = require('fs');
 const {
-  resolve,
+  join,
 } = require('path');
 const {
   promisify,
@@ -57,14 +57,14 @@ const dockerRun = async () => {
   console.log(`Running ${containerName} container.`);
   if (h2) {
     const mk = promisify(mkdir);
-    await mk(path.join(__dirname, 'secrets/'));
-    await mk(path.join(__dirname, 'secrets', 'ssl/'));
+    await mk(join(__dirname, 'secrets/'));
+    await mk(join(__dirname, 'secrets', 'ssl/'));
 
     const cp = promisify(copyFile);
     const sslDir = `/etc/letsencrypt/live/${letsEncryptDomain}/`;
     await Promise.all([
-      cp(`${sslDir}privkey.pem`, path.join(__dirname, 'secrets', 'ssl/')),
-      cp(`${sslDir}fullchain.pem`,  path.join(__dirname, 'secrets', 'ssl/')),
+      cp(`${sslDir}privkey.pem`, join(__dirname, 'secrets', 'ssl', 'privKey.pem',)),
+      cp(`${sslDir}fullchain.pem`, join(__dirname, 'secrets', 'ssl', 'fullchain.pem')),
     ]);
   }
 
