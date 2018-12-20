@@ -96,6 +96,8 @@ const dockerUp = async () => {
   console.log('dockerUp task complete.');
 };
 
+module.exports.dockerUp = dockerUp;
+
 const dockerRebuild = async () => {
   await dockerKill();
   await dockerUp();
