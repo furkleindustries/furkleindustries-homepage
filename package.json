@@ -39,6 +39,7 @@
     "express": "^4.16.4",
     "express-sslify": "^1.2.0",
     "express-static-gzip": "^0.3.2",
+    "gulp": "^4.0.0",
     "gulp-cli": "^2.0.1",
     "rxjs": "^6.3.3",
     "sass": "^1.15.2",
