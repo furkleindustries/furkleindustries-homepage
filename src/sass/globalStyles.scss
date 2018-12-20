@@ -1,4 +1,5 @@
-@import './fonts.scss';
+/* No clue why this relative import isn't working right. */
+@import './sass/fonts.css';
 
 html, body {
   position: relative;

@@ -13,8 +13,6 @@ const {
 const {
   copyFile,
   mkdir,
-  readFile,
-  writeFile,
 } = require('fs');
 const {
   join,
@@ -61,7 +59,7 @@ const dockerRun = async () => {
       await mk(join(__dirname, 'secrets/'));
     } catch (e) {
       if (e.code !== 'EEXIST') {
-        
+        throw e;
       }
     }
 
@@ -84,18 +82,18 @@ const dockerRun = async () => {
   await promisify(exec)('docker run ' +
                         /* Run the process on a separate thread from the shell. */
                         '-d ' +
-                        /* Call the container ${containerName}. */
+                        /* Call the container containerName. */
                         `--name  ${containerName} ` +
                         (h2 ?
-                          /* Expose port 3001 on the container as port 80 on the
+                          /* Expose port secondaryPort on the container as port 80 on the
                            * host machine, */
-                          '-p 80:3001 ' +
-                          /* and port 3000 on the container as port 443 on the
+                          `-p 80:${secondaryPort} ` +
+                          /* and port primaryPort on the container as port 443 on the
                           * host machine. */
-                          '-p 443:3000 ' :
+                          `-p 443:${primaryPort} ` :
                           /* Or only use HTTP. */
-                          '-p 80:3000 ') +
-                        /* Run from the ${imageName} image. */
+                          `-p 80:${secondaryPort} `) +
+                        /* Run from the imageName image. */
                         imageName);
 
   console.log(`Ran ${containerName} container.`);

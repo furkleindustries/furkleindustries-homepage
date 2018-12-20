@@ -7,14 +7,14 @@
   margin: 0;
   padding: 15px;
   box-sizing: border-box;
-}
 
-@media screen and (min-width: $large-mobile-breakpoint) {
-  padding: 20px;
-}
-
-@media screen and (min-width: $monitor-breakpoint) {
-  padding: 30px;
+  @media screen and (min-width: $large-mobile-breakpoint) {
+    padding: 20px;
+  }
+  
+  @media screen and (min-width: $monitor-breakpoint) {
+    padding: 30px;
+  }
 }
 
 /* Do not use any padding on the splash page. */
