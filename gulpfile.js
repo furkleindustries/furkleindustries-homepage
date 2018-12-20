@@ -74,7 +74,7 @@ const dockerRun = async () => {
     const cp = promisify(copyFile);
     const sslDir = `/etc/letsencrypt/live/${letsEncryptDomain}/`;
     await Promise.all([
-      cp(`${sslDir}privkey.pem`, join(__dirname, 'secrets', 'ssl', 'privKey.pem',)),
+      cp(`${sslDir}privkey.pem`, join(__dirname, 'secrets', 'ssl', 'privkey.pem',)),
       cp(`${sslDir}fullchain.pem`, join(__dirname, 'secrets', 'ssl', 'fullchain.pem')),
     ]);
   }
