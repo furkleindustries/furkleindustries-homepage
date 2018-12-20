@@ -57,8 +57,21 @@ const dockerRun = async () => {
   console.log(`Running ${containerName} container.`);
   if (h2) {
     const mk = promisify(mkdir);
-    await mk(join(__dirname, 'secrets/'));
-    await mk(join(__dirname, 'secrets', 'ssl/'));
+    try {
+      await mk(join(__dirname, 'secrets/'));
+    } catch (e) {
+      if (e.code !== 'EEXIST') {
+        
+      }
+    }
+
+    try {
+      await mk(join(__dirname, 'secrets', 'ssl/'));
+    } catch (e) {
+      if (e.code !== 'EEXIST') {
+        throw e;
+      }
+    }
 
     const cp = promisify(copyFile);
     const sslDir = `/etc/letsencrypt/live/${letsEncryptDomain}/`;
