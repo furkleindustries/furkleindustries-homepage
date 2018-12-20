@@ -11,8 +11,8 @@
     update: yes
 
 - name: Kill Docker container
-  command: "cd /etc/furkleindustries-homepage && gulp dockerKill"
+  command: "sh -c 'cd /etc/furkleindustries-homepage && gulp dockerKill'"
   ignore_errors: yes
 
 - name: Docker up
-  command: "cd /etc/furkleindustries-homepage/ && gulp dockerUp"
+  command: "sh -c 'cd /etc/furkleindustries-homepage/ && gulp dockerUp'"
