@@ -24,6 +24,8 @@ const {
 } = require('util');
 /* */
 
+const h2 = true;
+
 const dockerBuild = async () => {
   console.log(`Building ${imageName} image.`);
   await promisify(exec)(`docker build -t ${imageName} ${__dirname}`);
