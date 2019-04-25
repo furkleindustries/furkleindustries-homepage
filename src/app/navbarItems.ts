@@ -1,9 +1,9 @@
 export interface INavBarItemProps {
-  href:         string;
-  text:         string;
+  href: string;
+  text: string;
   description?: string;
-  root?:        boolean;
-  imgId?:      string;
+  imgId?: string;
+  root?: boolean;
 }
 
 export const navbarItems: Array<INavBarItemProps> = [
@@ -28,10 +28,10 @@ export const navbarItems: Array<INavBarItemProps> = [
     imgId: 'Highway',
   },
 
-  {
+  /*{
     href: '/resources',
     text: 'Resources',
     description: 'Links to Furkle Industries repositories and services.',
     imgId: 'Cityscape',
-  },
+  },*/
 ];

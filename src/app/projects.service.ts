@@ -1,14 +1,11 @@
-import { Injectable } from '@angular/core';
-import { projects } from './projects';
+import {
+  Injectable,
+} from '@angular/core';
+import {
+  projects,
+} from './projects';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ProjectsService {
-
-  constructor() { }
-
-  getProjects() {
-    return projects;
-  }
+  public getProjects = () => Array.from(projects);
 }
