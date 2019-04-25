@@ -14,8 +14,8 @@ import { ProjectsComponent } from './projects/projects.component';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 import { NavgridComponent } from './navgrid/navgrid.component';
 import { NavgridItemComponent } from './navgrid/navgrid-item/navgrid-item.component';
-import { ProjectsListComponent } from './projects-list/projects-list.component';
-import { ProjectsListItemComponent } from './projects-list/projects-list-item/projects-list-item.component';
+import { ProjectsListComponent } from './projects/projects-list/projects-list.component';
+import { ProjectsListItemComponent } from './projects/projects-list/projects-list-item/projects-list-item.component';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
