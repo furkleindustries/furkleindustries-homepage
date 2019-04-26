@@ -1,7 +1,7 @@
 <!-- Don't display a grid item for the root page. -->
-<div class="NavgridItem" *ngIf="!(item || {}).root">
-  <a class="Link" href="{{(item || {}).href}}">
-    <div class="{{(item || {}).imgId}} Background"></div>
+<div class="NavgridItem" *ngIf="!item.root">
+  <div class="Link">
+    <div class="{{item.imgId}} Background"></div>
 
     <div className="Container">
       <h2 class="Title">
@@ -12,5 +12,5 @@
         {{(item || {}).description}}
       </p>
     </div>
-  </a>
+  </div>
 </div>
