@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[26],{86:function(n,o,t){"use strict";t.r(o),t.d(o,"storyContent",function(){return e}),t.d(o,"text",function(){return r}),t.d(o,"compilerOutput",function(){return u});const e={inkVersion:19,root:[[{"->":"top_knot"},["done",{"#n":"g-0"}],null],"done",{top_knot:["^Hello world!","\n","done",{"#f":3}],"#f":3}],listDefs:{}},r="-> top_knot\n\n=== top_knot ===\nHello world!\n-> DONE",u=[]}}]);
+//# sourceMappingURL=26.0eea0329.chunk.js.map
