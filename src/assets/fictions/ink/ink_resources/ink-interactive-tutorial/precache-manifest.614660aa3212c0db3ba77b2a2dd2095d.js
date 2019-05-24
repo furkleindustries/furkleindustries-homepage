@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "cc6962c68e848c4a1bc6f8b4fe39f864",
+    "revision": "2cd35062063a3a46d4c8092bca6f2c10",
     "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/index.html"
   },
   {
-    "revision": "eff06bc92feb0267b25a",
+    "revision": "258c468cde55f1fe6d7a",
     "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/static/css/3.6829684c.chunk.css"
   },
   {
@@ -96,8 +96,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/static/js/29.407562de.chunk.js"
   },
   {
-    "revision": "eff06bc92feb0267b25a",
-    "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/static/js/3.09bb6132.chunk.js"
+    "revision": "258c468cde55f1fe6d7a",
+    "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/static/js/3.d358879a.chunk.js"
   },
   {
     "revision": "4864e622d5bf43111dd1",
@@ -184,7 +184,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/static/js/main.30cca40e.chunk.js"
   },
   {
-    "revision": "f9d1dfa030fb2dbbb702",
-    "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/static/js/runtime~main.6fbb6f71.js"
+    "revision": "cddff576edf4344a68f6",
+    "url": "/fictions/ink/ink_resources/ink-interactive-tutorial/static/js/runtime~main.b7c9feae.js"
   }
 ]);
