@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/fictions/ink/ink_resources/ink-interactive-tutorial/precache-manifest.48b7439894375a2ac22454a8f38dda26.js"
+  "/fictions/ink/ink_resources/ink-interactive-tutorial/precache-manifest.614660aa3212c0db3ba77b2a2dd2095d.js"
 );
 
 self.addEventListener('message', (event) => {
