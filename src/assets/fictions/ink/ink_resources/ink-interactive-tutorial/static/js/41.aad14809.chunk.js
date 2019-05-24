@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[41],{103:function(o,n,t){"use strict";t.r(n),t.d(n,"storyContent",function(){return e}),t.d(n,"text",function(){return r}),t.d(n,"compilerOutput",function(){return c});const e={inkVersion:19,root:[["^Hello world!","\n","ev","str","^Hello back!","/str","/ev",{"*":"0.c-0",flg:20},{"c-0":["\n","^Nice to hear from you!","\n",{"->":"0.g-0"},{"#f":5}],"g-0":["done",null]}],"done",{"#f":3}],listDefs:{}},r="Hello world!\n\t*\t[Hello back!]\n\t\tNice to hear from you!",c=[]}}]);
-//# sourceMappingURL=41.aad14809.chunk.js.map
