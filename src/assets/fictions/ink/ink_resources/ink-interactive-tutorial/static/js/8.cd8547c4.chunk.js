@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[8],{31:function(n,t,o){"use strict";o.r(t),o.d(t,"storyContent",function(){return e}),o.d(t,"text",function(){return i}),o.d(t,"output",function(){return r});const e={inkVersion:19,root:[[["done",{"#n":"g-0"}],null],"done",{"#f":3}],listDefs:{}},i="TODO: Write this section properly!",r="TODO: 'compiler-comments.ink' line 1: Write this section properly!"}}]);
-//# sourceMappingURL=8.cd8547c4.chunk.js.map
