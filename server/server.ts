@@ -101,11 +101,11 @@ app.get('*', (req, res) => {
 });
 
 /* Directory with keys in it. */
-const letsEncryptDir = resolve(process.cwd(), 'secrets', 'ssl');
+const letsEncryptDir = resolve(process.cwd(), 'secrets');
 
 const getSpdyOptions = () => ({
-  cert: readFileSync(resolve(letsEncryptDir, 'fullchain.pem')),
-  key:  readFileSync(resolve(letsEncryptDir, 'privkey.pem')),
+  cert: readFileSync(resolve(letsEncryptDir, 'furkleindustries_com.crt')),
+  key:  readFileSync(resolve(letsEncryptDir, 'furkleindustries_com.p7b')),
   spdy: {
     protocols: [
       'h2',
