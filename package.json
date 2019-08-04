@@ -10,6 +10,7 @@
     "prerender": "node dist/server/prerender",
     "start": "ng serve",
     "build": "ng build",
+    "update": "ng update",
     "test": "ng test --watch=true --progress true",
     "test:headless": "ng test",
     "lint": "ng lint",
